@@ -13,7 +13,7 @@ def touch(fpath):
 	check= os.path.exists(fpath)
 	(lambda fname1:[open(fname1,"w+",errors="ignore").write(""),print('Touched',fname1)] 
 		if not check else None) (fpath)
-
+a=1
 
 def softwrite(fname,content):
 	f=open(fname,"w+").write(content) if not os.path.exists(fname)	else print('file exists, ricsk nai lene ka')

@@ -9,11 +9,14 @@ def fwrite(fname,content):
 	f=open(fname,"w+",errors="ignore")
 	f.write(content)
 
+def fappend(fname,content):
+	f=open(fname,"a+",errors="ignore")
+	f.write(content)
+
 def touch(fpath):
 	check= os.path.exists(fpath)
 	(lambda fname1:[open(fname1,"w+",errors="ignore").write(""),print('Touched',fname1)] 
 		if not check else None) (fpath)
-a=1
 
 def softwrite(fname,content):
 	f=open(fname,"w+").write(content) if not os.path.exists(fname)	else print('file exists, ricsk nai lene ka')
@@ -52,6 +55,10 @@ def threadQueue(workQueue,worker):
 	pass
 
 #===============WEB FUNCTIONS
+def make_soup(markup):
+	from bs4 import BeautifulSoup as soup
+	return soup(markup,'html5lib')
+
 def get_page(url,soupify=False):
 	from bs4 import BeautifulSoup as soup
 	import html5lib,requests
@@ -62,25 +69,22 @@ def get_page(url,soupify=False):
 	else:
 		return rawtext
 
-def get_page_selenium(url,headless=True,strategy='eager'):
+def get_page_selenium(url,headless=True,strategy='normal'):
 	from selenium import webdriver as wd
-	opts = wd.firefox.options.Options();	opts.page_load_strategy = strategy
+	opts = wd.firefox.options.Options();	
+	opts.page_load_strategy = strategy
 	if headless: opts.headless = True 
 	# opts.add_argument("--headless") 		#works standalone
 	try:
 		client 	= wd.Firefox(options=opts);
 		client.get(url);
 		markup= client.page_source;
-		client.quit();
-		return markup
+		return client,markup
 	except Exception as e:	client.quit();	print("browser exit due to error"+str(e))
 
 def push_tab(client,url):
 	client.execute_script("window.open('{}', '_blank')".format(url))
 
-def make_soup(markup):
-	from bs4 import BeautifulSoup as soup
-	return soup(markup,'html5lib')
 	
                 
 

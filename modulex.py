@@ -25,11 +25,57 @@ def cleanup():
 	import shutil
 	shutil.rmtree('__pycache__')
 
+
+
+
+
+
+# =============== AUTO_PACKAGE
+def auto_pip(mode,modulesList):
+# automatically Instally Pip Packages Without Missing Module Error
+	import subprocess as sp
+	# PRE PIP CHECK
+	proc=sp.run('pip list',stdout=sp.PIPE,text=1)
+	consoleOUT=proc.stdout
+	satisfied={x: (x in consoleOUT) for x in modulesList}
+	[print(x) for x in satisfied.items()]
+
+	if mode=='download':
+		proc=sp.run(f'pip download {" ".join(modulesList)} ' ,stdout=sp.PIPE	,shell=0)
+		output=proc.stdout.read().decode('ascii').split('\n')
+		print([x for x in output if 'Successfully' in x][0])
+		proc.kill()
+			
+	if mode=='install': proc=sp.run('pip install {} --find-links ./PIP_MODULES '.format(" ".join(modulesList)),text=True,shell=1)
+
+	if mode=='uninstall': proc=sp.run('pip uninstall -y {}'.format(" ".join(modulesList)),text=True,shell=0,input='y\ny\ny\ny\ny\ny\n')
+
+	#CHECK SUCCESS OF PROCESS
+	if proc.returncode==0:
+		print('AUTO PIP COMPILED')
+		return proc.returncode
+
+modules=['numpy','pandas','scikit-learn']
+print(f'pip download {" ".join(modules)} -d ./PIP_MODULES')
+auto_pip('check',modules)
+
+import numpy
+arr=numpy.array([1,2,3,4,5])
+print(arr)
+print('________________________________')
+
+
+
 # =============== Miscalleneous
 def kill_code():
 	import os
 	os.kill(os.getpid(),signal.SIGABRT)
 kill_switch=kill_code
+
+
+
+
+
 
 # ===============JSON FUNCTIONS
 import json
@@ -49,10 +95,20 @@ def jdump(dictonary,toFile):
 	#write to disk
 	return json.dump(dictonary,open(toFile,"w+"),indent=4)
 
+
+
+
+
+
 #=============== PARALLELISM
 import threading
 def threadQueue(workQueue,worker):
 	pass
+
+
+
+
+
 
 #===============WEB FUNCTIONS
 def make_soup(markup):
@@ -86,29 +142,32 @@ def push_tab(client,url):
 	client.execute_script("window.open('{}', '_blank')".format(url))
 
 
+
+
+
+
 #______________________________________________
 #@#$%@#$%#$%#$%#+++CRYPTOGRAPHY+++#@$#@$#@$!@# 
 import random
-class Nikcipher:
+class Swamicrypt:
 	def __init__(self, basepassword):
 		self.basepassword= basepassword
-		self.cryptSpace= self.makeCryptSpace()
+		self.cryptSpace= self.generate_alphanumeric_chars()
 		self.viewCryptSpace= lambda :"".join(self.cryptSpace)
 		self.storage= self.cryptx()
-		self.get_keypass= self.make_key(self.storage[0],self.storage[1])
-	
-	def makeCryptSpace(self):
-		cryptSpace=  [chr(x) for x in range(ord("0"),ord("9")+1)]
-		cryptSpace+= [chr(x) for x in range(ord("a"),ord("z")+1)]
-		cryptSpace+= [chr(x) for x in range(ord("A"),ord("Z")+1)]
-		return cryptSpace
-
+		self.credentials= self.make_key(self.storage[0],self.storage[1])
+# 
+	def generate_alphanumeric_chars(self):
+		rn=range
+		space=  [chr(x) for x in rn(ord("0"),ord("9")+1)]
+		space+= [chr(x) for x in rn(ord("a"),ord("z")+1)]
+		space+= [chr(x) for x in rn(ord("A"),ord("Z")+1)]
+		return space
+# 
 	def cryptx(self,security=4):
-		def r(namespace,k=security):
-			return random.sample(namespace,k=k)
+		def r(namespace,k=security): return random.sample(namespace,k=k)
 
 		cryptSpace=self.cryptSpace
-		ordstr=[ord(x) for x in self.basepassword]
 		keySpace=[r(cryptSpace,k=1)[0] for x in range(len(self.basepassword)*security)]
 		keySpace="".join(keySpace)
 		return (self.basepassword,keySpace)
@@ -116,19 +175,21 @@ class Nikcipher:
 	def make_key(self,stringx,keySpace):
 		ks_indices=random.sample(list(enumerate(keySpace)) ,k=len(stringx))
 		ord_add=[ord(s)+ord(p[1]) for s,p in zip(stringx,ks_indices)]
-		key=[str(ki[0])+'.'+str(oa) for ki,oa in zip(ks_indices,ord_add)]
-		key="+".join(key)
+		key=[str(ki[0])+'+'+str(oa) for ki,oa in zip(ks_indices,ord_add)]
+		key="-".join(key)
 		return key,keySpace
 
-	def decryptx(self,key,keyspace):
-		maps=key.split('+')
-		imods=[x.split('.') for x in maps]
+	def decryptx(self,credentials):
+		key,keyspace=credentials
+		maps=key.split('-')
+		imods=[x.split('+') for x in maps]
 		originPass=[ chr(int(x[1]) - ord(keyspace[int(x[0])])) for x in imods ]
-		return originPass
+		return "".join(originPass)
 
 if __name__ == '__main__':
-	cryptengine=Nikcipher("nikhilswami1@gmail.com")
-	kp=cryptengine.get_keypass
-	fwrite('cryptEngineTest.txt',str(kp))
-	orignal=cryptengine.decryptx(kp[0],kp[1])
-	print('orignal password=={}'.format(orignal))
+	cryptonik=Swamicrypt("qwerty123")
+	kp=cryptonik.credentials
+	print([eval('eval(kp[0])'),kp][1])
+	orignal=cryptonik.decryptx(kp)
+
+	# fwrite('cryptEngineTest.txt',str(kp))

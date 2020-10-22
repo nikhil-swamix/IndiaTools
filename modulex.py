@@ -33,36 +33,54 @@ def cleanup():
 # =============== AUTO_PACKAGE
 def auto_pip(mode,modulesList):
 # automatically Instally Pip Packages Without Missing Module Error
+	print('___autopip started___')
 	import subprocess as sp
 	# PRE PIP CHECK
 	proc=sp.run('pip list',stdout=sp.PIPE,text=1)
-	consoleOUT=proc.stdout
-	satisfied={x: (x in consoleOUT) for x in modulesList}
-	[print(x) for x in satisfied.items()]
+	# consoleOUT=proc.stdout
+	satisfied={x: (x in proc.stdout) for x in modulesList}
+	pipInstallSignal=0
+	pipUninstallSignal=0
+	for k,v in satisfied.items():
+		print(k+'\t> exists') if v else print(k,'is missing',end=' =|= ')
+		if not v: pipInstallSignal=1  
+		if v:pipUninstallSignal=1
 
+	
 	if mode=='download':
 		proc=sp.run(f'pip download {" ".join(modulesList)} ' ,stdout=sp.PIPE	,shell=0)
 		output=proc.stdout.read().decode('ascii').split('\n')
 		print([x for x in output if 'Successfully' in x][0])
 		proc.kill()
 			
-	if mode=='install': proc=sp.run('pip install {} --find-links ./PIP_MODULES '.format(" ".join(modulesList)),text=True,shell=1)
+	if mode=='install': 
+		if pipInstallSignal==True: 
+			proc=sp.run('pip install {} -U'.format(" ".join(modulesList)),text=True,shell=1)
+		else: return print(f'\n{modulesList} were already installed')
 
-	if mode=='uninstall': proc=sp.run('pip uninstall -y {}'.format(" ".join(modulesList)),text=True,shell=0,input='y\ny\ny\ny\ny\ny\n')
+	if mode=='uninstall': 
+		if pipUninstallSignal==True: 
+			proc=sp.run('pip uninstall -y {}'.format(" ".join(modulesList)),text=True,shell=0,input='y\ny\ny\ny\ny\ny\n')
+		else: return print(f'\n{modulesList} were already uninstalled')
 
 	#CHECK SUCCESS OF PROCESS
 	if proc.returncode==0:
-		print('AUTO PIP COMPILED')
+		print('auto_pip Run Success')
 		return proc.returncode
 
 modules=['numpy','pandas','scikit-learn']
-print(f'pip download {" ".join(modules)} -d ./PIP_MODULES')
-auto_pip('check',modules)
+a=auto_pip('install',modules)
+print(a)
 
-import numpy
+try:
+	import numpy
+	pass
+except Exception as e:
+	print(e)
+	exit()
 arr=numpy.array([1,2,3,4,5])
 print(arr)
-print('________________________________')
+print('____________NEW CODE BEGIN_______________')
 
 
 

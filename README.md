@@ -4,7 +4,8 @@
 
 ## - def fread(path):
 
- 	reads files given a 'path'
+ 	reads files contents and return string given a 'path', 
+ 	!not return binary string as result.
 
 ## - def setload(path,seperator='\n'):
 

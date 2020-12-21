@@ -263,8 +263,12 @@ if __name__ == '__main__':
 	...
 
 	import requests
-	buildingtype='11'
-	url='http://s1.mechhero.com/Building.aspx?sid=9'
+	buildingtype={
+		'powerplant':'3',
+		'crystalmine':'1',
+		'gasmine':'4'
+		}
+	url='http://s1.mechhero.com/Building.aspx?sid=32'
 	headers={
 		'Cookie': 'mechhero=3g34hz=&f8wj1h=&4jwhgl=1033&h42sc8=INT&jks2kw=&bi83z1=0; ASP.NET_SessionId=kkfqpkp0gm32qbzkw3e1uwjk',
 		'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0'
@@ -273,7 +277,7 @@ if __name__ == '__main__':
 	"__VIEWSTATE": 'CL/nkSmIFvoSm5/0o0kpgqFB1J3G6FSqHAuhOMGR4CwSS8r3KbPslqobiBHrsAvRZ6A25cyUxFn/COv3i7+J2BloLZwLQxCvUozour4yDos=',
 	"rcid": "131887",
 	"__VIEWSTATEGENERATOR": "2465F31B",
-	"__EVENTTARGET": "ctl00$ctl00$body$content$building12",
+	"__EVENTTARGET": f"ctl00$ctl00$body$content$building{buildingtype['powerplant']}",
 	"__EVENTARGUMENT": "build"
 	}
 	x=requests.post(url,data=params, params=params, headers=headers)

@@ -1,6 +1,6 @@
 # Features Of Modulex
 
-# FILE FUNCTIONS
+# *FILE FUNCTIONS*
 
 ## - def fread(path):
 

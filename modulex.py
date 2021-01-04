@@ -1,7 +1,4 @@
 #================= IO RELATED
-import os
-import random
-
 def fread(path):
 	f=open(path,'r+').read()
 	return f
@@ -18,6 +15,7 @@ def fappend(fname,content):
 	f.write(content+'\n')
 
 def touch(fpath):
+	import os
 	sep= '/' if '' in fpath else '\\' 
 	os.makedirs((sep).join(fpath.split(sep)[:-1]),exist_ok=True)
 	if not os.path.exists(fpath): 
@@ -25,9 +23,11 @@ def touch(fpath):
 		print('Touched',fpath)
 
 def softwrite(fname,content):
+	import os
 	f=open(fname,"w+").write(content) if not os.path.exists(fname)	else print('file exists, ricsk nai lene ka')
 
 def list_files_by_time(folder):
+	import os
 	jobFileQueue=[folder+x for x in os.listdir(folder)]
 	jobFileQueue.sort(key=os.path.getmtime)
 	return (jobFileQueue)
@@ -41,23 +41,23 @@ def cleanup():
 
 #DATA FUNCTIONS
 def pickrandom(L):
+	import random
 	i = random.randrange(len(L)) # get random index
 	L[i], L[-1] = L[-1], L[i]    # swap with the last element
 	return L.pop()                  # pop last element O(1)
 
-def lowercase(text):
-	pass
+def shuffle(LIST):
+	import random
+	return random.sample(LIST, len(LIST))
 
 
 # =============== AUTO_PACKAGE
 def auto_pip(modulesList,mode='install'):
-	'''
-		+DOC: automatically Install Pip Packages Without Missing Module 
+	'''+DOC: automatically Install Pip Packages Without Missing Module
 		Error before code runs and upgrades pip if its old, failsafe and fast
 		can be invoked within code rather than running pip install blah 
 		from cmd/terminal.
-		+USAGE: auto_pip('mode',[modules])
-				auto_pip('install',['pytorch','numpy','etc...']) 
+		+USAGE: auto_pip([modules,...])
 		where mode can be {install,uninstall,download} and modules is
 		a standard py list ['numpy','pandas','tensorflow==1.15.1' and so on...]
 		+NOTES: downloading can be useful if want to install later 
@@ -65,16 +65,14 @@ def auto_pip(modulesList,mode='install'):
 	'''
 	modulesList=[modulesList] if isinstance(modulesList,str) else modulesList
 	import subprocess as sp
-	#>>> preflight check && upgrade if old
-	proc=sp.run('pip list',stdout=sp.PIPE,stderr=sp.PIPE,text=1)
+	proc=sp.run('pip list',stdout=sp.PIPE,stderr=sp.PIPE,text=1)#>>> preflight check && upgrade if old
 	if 'You should consider upgrading' in proc.stderr:
 		upgradeCommand=proc.stderr.split('\'')
 		sp.run(upgradeCommand[1])
 
 	pipInstallSignal,pipUninstallSignal= 0,0 #declare signals as 0,
-	#below dict-> true if module present against module name ex: numpy:True
 	satisfied={x:(x.lower() in proc.stdout.lower()) for x in modulesList} 
-	for k,v in satisfied.items():
+	for k,v in satisfied.items(): # if any module is unsatisfied set pip signal to install the required modules
 		print(k+'\t:preinstalled') if v else print(k,'is missing',end=' =|= ')
 		if v==False: pipInstallSignal=1  
 		if v==True: pipUninstallSignal=1 #NAND Condition if true then start uninstalling
@@ -102,7 +100,6 @@ def auto_pip(modulesList,mode='install'):
 
 
 
-
 # =============== Miscalleneous
 def wlan_ip():
     import subprocess
@@ -113,25 +110,24 @@ def wlan_ip():
         if scan:
             if 'ipv4' in i: return i.split(':')[1].strip()
 
-#CACHE--------------------------------------
+#------------------------------CACHE
 class Cache: 
 	pass#CREATES CACHE to save future calls cost
 
-
-
-
-
-
-# ===============JSON FUNCTIONS
-import json
+#------------------------------JSON FUNCTIONS
 def jloads(string): #return dict
+	import json
 	return json.loads(string)
 def jload(path): #return dict
+	import json
 	return json.load(open(path))
 
 def jdumps(dictonary,indent=4): #return string
+	import json
 	return json.dumps(dictonary,indent=indent)
-def jdump(dictonary,path): #write to disk
+	
+def jdump(path,dictonary): #write to disk
+	import json
 	return json.dump(dictonary,open(path,"w+"),indent=4)
 
 def jloadlines(path):
@@ -143,6 +139,7 @@ def jloadlines(path):
 	return jldict
 
 def jdumplines(dictonary,indent=None): #return string
+	import json
 	return json.dumps(dictonary,indent=indent)
 
 
@@ -151,9 +148,9 @@ def jdumplines(dictonary,indent=None): #return string
 
 #=============== PARALLELISM
 
-def asyncfn(fn, args):
+def asyncfn(fn, *args, **kwargs):
 	import threading
-	x=threading.Thread(target=fn,args=args);x.start()
+	x=threading.Thread(target=fn,args=args, kwargs=kwargs);x.start()
 	return x
 
 def threadQueue(workQueue,worker):
@@ -193,6 +190,7 @@ def get_page_soup(url,makesoup=True):
 		return req.text
 
 def get_page(url): #return a page req object and retrive text later
+	make_session_pool()
 	requests=random.choice(reqSessionPool) #pick a random session for reducing traffic to single connection
 	req=requests.get(url,stream=True)
 	if not req:
@@ -260,27 +258,28 @@ class Swamicrypt:
 		return "".join(orignalPassword)
 
 if __name__ == '__main__':
-	...
-
 	import requests
-	buildingtype={
-		'powerplant':'3',
-		'crystalmine':'1',
-		'gasmine':'4'
-		}
+	# buildingtype={
+	# 	'powerplant':'3',
+	# 	'crystalmine':'1',
+	# 	'gasmine':'4'
+	# 	}
 	url='http://s1.mechhero.com/Building.aspx?sid=32'
 	headers={
 		'Cookie': 'mechhero=3g34hz=&f8wj1h=&4jwhgl=1033&h42sc8=INT&jks2kw=&bi83z1=0; ASP.NET_SessionId=kkfqpkp0gm32qbzkw3e1uwjk',
-		'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0'
+		'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0',
+		'ASP.NET_SessionId':"kkfqpkp0gm32qbzkw3e1uwjk"
 		}
-	params={
-	"__VIEWSTATE": 'CL/nkSmIFvoSm5/0o0kpgqFB1J3G6FSqHAuhOMGR4CwSS8r3KbPslqobiBHrsAvRZ6A25cyUxFn/COv3i7+J2BloLZwLQxCvUozour4yDos=',
-	"rcid": "131887",
-	"__VIEWSTATEGENERATOR": "2465F31B",
-	"__EVENTTARGET": f"ctl00$ctl00$body$content$building{buildingtype['powerplant']}",
-	"__EVENTARGUMENT": "build"
-	}
-	x=requests.post(url,data=params, params=params, headers=headers)
-	print(dir(x),x.text)
+	# params={
+	# "__VIEWSTATE": 'CL/nkSmIFvoSm5/0o0kpgqFB1J3G6FSqHAuhOMGR4CwSS8r3KbPslqobiBHrsAvRZ6A25cyUxFn/COv3i7+J2BloLZwLQxCvUozour4yDos=',
+	# "rcid": "131887",
+	# "__VIEWSTATEGENERATOR": "2465F31B",
+	# "__EVENTTARGET": f"ctl00$ctl00$body$content$building{buildingtype['powerplant']}",
+	# "__EVENTARGUMENT": "build"
+	# }
+	# x=requests.post(url,data=params, params=params, headers=headers)
+	# print(dir(x),x.text)
 #-----------------------------------
 	# auto_pip(['PyPDf2'])
+	x=requests.get(url,headers=headers)
+	print(x.text)

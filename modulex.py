@@ -1,10 +1,23 @@
 #================= IO RELATED
-def fread(path):
-	f=open(path,'r+').read()
-	return f
+import os
+import random
 
+
+#---------------------------
 def setload(path,seperator='\n'):
 	return set(fread(path).split(seperator))
+
+def setwrite(path,setDataType):
+	fwrite(path,"\n".join(setDataType))
+
+def setupdate(path,newset):
+	diff=newset - setload(path)
+	fappend(path,diff)
+
+#---------------------------
+def fread(path):
+	f=open(path,'r+',encoding='utf-8').read()
+	return f
 
 def fwrite(fname,content):
 	f=open(fname,"w+",errors="ignore")
@@ -15,19 +28,15 @@ def fappend(fname,content):
 	f.write(content+'\n')
 
 def touch(fpath):
-	import os
-	sep= '/' if '' in fpath else '\\' 
-	os.makedirs((sep).join(fpath.split(sep)[:-1]),exist_ok=True)
+	head=os.path.split(fpath)[0]
+	os.makedirs(head,exist_ok=True)
 	if not os.path.exists(fpath): 
-		open(fpath,"w+",errors="ignore").write("");
+		open(fpath,"w+",errors="ignore").close()
 		print('Touched',fpath)
+#---------------------------
 
-def softwrite(fname,content):
-	import os
-	f=open(fname,"w+").write(content) if not os.path.exists(fname)	else print('file exists, ricsk nai lene ka')
 
 def list_files_by_time(folder):
-	import os
 	jobFileQueue=[folder+x for x in os.listdir(folder)]
 	jobFileQueue.sort(key=os.path.getmtime)
 	return (jobFileQueue)
@@ -36,28 +45,34 @@ def cleanup():
 	import shutil
 	try: shutil.rmtree('__pycache__')
 	except :pass
-# cleanup()
+# cleanup() 
 
+#------------------IMPORT HELPER
+def add_pwd_for_imports(pwf):
+	import sys
+	sys.path.append(os.path.dirname(pwf))
 
-#DATA FUNCTIONS
+#------------------RANDOMIZERS
+def randindex(L):
+	return random.randrange(len(L)) # get random index
+
 def pickrandom(L):
-	import random
-	i = random.randrange(len(L)) # get random index
-	L[i], L[-1] = L[-1], L[i]    # swap with the last element
-	return L.pop()                  # pop last element O(1)
+	i = randindex(L) 
+	L[i], L[-1] = L[-1], L[i] # swap with the last element
+	return L.pop() # pop last element O(1)
 
-def shuffle(LIST):
-	import random
-	return random.sample(LIST, len(LIST))
-
+def shuffle(L):
+	return [pickrandom(L) for x in range(len(L))]
 
 # =============== AUTO_PACKAGE
 def auto_pip(modulesList,mode='install'):
-	'''+DOC: automatically Install Pip Packages Without Missing Module
+	'''
+		+DOC: automatically Install Pip Packages Without Missing Module 
 		Error before code runs and upgrades pip if its old, failsafe and fast
 		can be invoked within code rather than running pip install blah 
-		from cmd/terminal.
-		+USAGE: auto_pip([modules,...])
+		from cmd/terminal. mode can be +1 or -1, self explanatory.
+		+USAGE: auto_pip('mode',[modules])
+				auto_pip('install',['pytorch','numpy','etc...']) 
 		where mode can be {install,uninstall,download} and modules is
 		a standard py list ['numpy','pandas','tensorflow==1.15.1' and so on...]
 		+NOTES: downloading can be useful if want to install later 
@@ -65,14 +80,16 @@ def auto_pip(modulesList,mode='install'):
 	'''
 	modulesList=[modulesList] if isinstance(modulesList,str) else modulesList
 	import subprocess as sp
-	proc=sp.run('pip list',stdout=sp.PIPE,stderr=sp.PIPE,text=1)#>>> preflight check && upgrade if old
+	#>>> preflight check && upgrade if old
+	proc=sp.run('pip list',stdout=sp.PIPE,stderr=sp.PIPE,text=1)
 	if 'You should consider upgrading' in proc.stderr:
 		upgradeCommand=proc.stderr.split('\'')
 		sp.run(upgradeCommand[1])
 
 	pipInstallSignal,pipUninstallSignal= 0,0 #declare signals as 0,
+	#below dict-> true if module present against module name ex: numpy:True
 	satisfied={x:(x.lower() in proc.stdout.lower()) for x in modulesList} 
-	for k,v in satisfied.items(): # if any module is unsatisfied set pip signal to install the required modules
+	for k,v in satisfied.items():
 		print(k+'\t:preinstalled') if v else print(k,'is missing',end=' =|= ')
 		if v==False: pipInstallSignal=1  
 		if v==True: pipUninstallSignal=1 #NAND Condition if true then start uninstalling
@@ -86,7 +103,9 @@ def auto_pip(modulesList,mode='install'):
 	if mode=='install': 
 		if pipInstallSignal==True: 
 			proc=sp.run('pip install {} -U'.format(" ".join(modulesList)),text=True,shell=1)
-		else: print(f'{modulesList} were already installed'); return 1 
+		else: print(f'{modulesList} were already installed'); 
+		proc.kill()
+		return 1 
 
 	if mode=='uninstall': 
 		if pipUninstallSignal==True: 
@@ -100,34 +119,27 @@ def auto_pip(modulesList,mode='install'):
 
 
 
-# =============== Miscalleneous
-def wlan_ip():
-    import subprocess
-    result=subprocess.run('ipconfig',stdout=subprocess.PIPE,text=True).stdout.lower()
-    scan=0
-    for i in result.split('\n'):
-        if 'wireless' in i: scan=1
-        if scan:
-            if 'ipv4' in i: return i.split(':')[1].strip()
 
-#------------------------------CACHE
+# =============== Miscalleneous
+#CACHE--------------------------------------
 class Cache: 
 	pass#CREATES CACHE to save future calls cost
 
-#------------------------------JSON FUNCTIONS
+
+
+
+
+
+# ===============JSON FUNCTIONS
+import json
 def jloads(string): #return dict
-	import json
 	return json.loads(string)
 def jload(path): #return dict
-	import json
 	return json.load(open(path))
 
 def jdumps(dictonary,indent=4): #return string
-	import json
 	return json.dumps(dictonary,indent=indent)
-	
-def jdump(path,dictonary): #write to disk
-	import json
+def jdump(dictonary,path): #write to disk
 	return json.dump(dictonary,open(path,"w+"),indent=4)
 
 def jloadlines(path):
@@ -139,7 +151,6 @@ def jloadlines(path):
 	return jldict
 
 def jdumplines(dictonary,indent=None): #return string
-	import json
 	return json.dumps(dictonary,indent=indent)
 
 
@@ -148,13 +159,13 @@ def jdumplines(dictonary,indent=None): #return string
 
 #=============== PARALLELISM
 
-def asyncfn(fn, *args, **kwargs):
+def asyncfn(fn, args):
 	import threading
-	x=threading.Thread(target=fn,args=args, kwargs=kwargs);x.start()
+	x=threading.Thread(target=fn,args=args);x.start()
 	return x
 
-def threadQueue(workQueue,worker):
-	pass
+
+
 
 def parallelFunction(functionVariableName,threadCount):
 	''' BEST USED FOR INTERNET ATTACKS OR REPETITIVE TASKS'''
@@ -173,33 +184,23 @@ def parallelFunction(functionVariableName,threadCount):
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0'}
 
 def make_session_pool():
-	global reqSessionPool
 	import requests
-	reqSessionPool=[requests.Session() for x in range(3)]
+	return [requests.Session() for x in range(3)]
 
-def get_page_soup(url,makesoup=True):
-	make_session_pool()
-	from bs4 import BeautifulSoup as soup
-	requests=random.choice(reqSessionPool) #pick a random session for reducing traffic to single connection
-	req=requests.get(url,stream=True)
-	if req.status_code==404:
-		return 404
-	if makesoup==True :
-		return soup(req.text,'html.parser')
-	if makesoup==False:
-		return req.text
 
 def get_page(url): #return a page req object and retrive text later
-	make_session_pool()
-	requests=random.choice(reqSessionPool) #pick a random session for reducing traffic to single connection
+	import requests	
 	req=requests.get(url,stream=True)
-	if not req:
+	if not req: #send headers only when invalid response
 		req = requests.get(url,headers=headers)
 	return req
 
 def make_soup(markup):
 	from bs4 import BeautifulSoup as soup
 	return soup(markup,'html.parser')
+
+def get_page_soup(url):
+	return make_soup(get_page(url).text)
 
 def get_page_selenium(url,headless=True,strategy='normal'):
 	from selenium import webdriver as wd
@@ -211,13 +212,22 @@ def get_page_selenium(url,headless=True,strategy='normal'):
 		client 	= wd.Firefox(options=opts);
 		client.get(url);
 		markup= client.page_source;
-		return client,markup
+		return make_soup(markup)
 	except Exception as e:	client.quit();	print("browser exit due to error"+str(e))
 
 def push_tab(client,url):
 	client.execute_script("window.open('{}', '_blank')".format(url))
 
-
+def wlan_ip():
+    import subprocess
+    result=subprocess.run('ipconfig',stdout=subprocess.PIPE,text=True).stdout.lower()
+    scan=0
+    for i in result.split('\n'):
+        if 'wireless' in i:
+            scan=1
+        if scan:
+            if 'ipv4' in i:
+                return i.split(':')[1].strip()
 
 
 
@@ -258,28 +268,14 @@ class Swamicrypt:
 		return "".join(orignalPassword)
 
 if __name__ == '__main__':
-	import requests
-	# buildingtype={
-	# 	'powerplant':'3',
-	# 	'crystalmine':'1',
-	# 	'gasmine':'4'
-	# 	}
-	url='http://s1.mechhero.com/Building.aspx?sid=32'
-	headers={
-		'Cookie': 'mechhero=3g34hz=&f8wj1h=&4jwhgl=1033&h42sc8=INT&jks2kw=&bi83z1=0; ASP.NET_SessionId=kkfqpkp0gm32qbzkw3e1uwjk',
-		'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0',
-		'ASP.NET_SessionId':"kkfqpkp0gm32qbzkw3e1uwjk"
-		}
-	# params={
-	# "__VIEWSTATE": 'CL/nkSmIFvoSm5/0o0kpgqFB1J3G6FSqHAuhOMGR4CwSS8r3KbPslqobiBHrsAvRZ6A25cyUxFn/COv3i7+J2BloLZwLQxCvUozour4yDos=',
-	# "rcid": "131887",
-	# "__VIEWSTATEGENERATOR": "2465F31B",
-	# "__EVENTTARGET": f"ctl00$ctl00$body$content$building{buildingtype['powerplant']}",
-	# "__EVENTARGUMENT": "build"
-	# }
-	# x=requests.post(url,data=params, params=params, headers=headers)
-	# print(dir(x),x.text)
-#-----------------------------------
-	# auto_pip(['PyPDf2'])
-	x=requests.get(url,headers=headers)
-	print(x.text)
+	# print(f"hello {'anshil':10} poller podder yes papa")
+	# L=['app','cas','sacas','asdas','asdwewe','3322dsds','vvxx']
+	# print(shuffle(L))
+	# url='https://www.mycryptopedia.com/crypto-trading-signals-an-ultimates-beginners-guide/?__cf_chl_captcha_tk__=76b71110f18b3829e833a42bed2e05eeb1be6ad4-1613428240-0-AdjBdGzKi81lzbixDDK5cHd7-ZF-HwwjQYo2-vqJ6gZAp3ltr-0GLclQ7Uy_H1EZqHNqScOpBRCtmJN7AfRVAtBGFBVX8Pm5zjq4ZWMInwryEuIpgYM_9zsN2dpus92sINzjgcRHC5tOUpNBpLYe4zOda1mfyfNQu-Df2Sn_rRKsESiOIOWaXoxic5qpDuQIdIDr76XwMpzc8yGVEz8Hjuj0bYgULPyPTY-IZpSxTw-HeK8h1vI4Bnc5Aj6l5YN4ARGqsYyXTj7oWiDR4MKx4lSZsDQwuxBxtV-sdYJRgPRB0EOQ5s3VYoKb7Lh36V1G6GqWTxDPKjc1eeps7nS3Y2O7SS6L6uyrAwRRgwJuUJrCE8eyLIrC7bnE9jVLHPWOov1vfKiX_rYtTHGtw4Wp-gZHgP5Uh2yEbzuTynYc6uZjLrIYp8osmdy3Mhz8dZYX4eVYUcxD3qWkUFY6g8Nwu9YwWoHZ4HqykG1xeNU_ey-ja9rv3f3XBrfulBBC1Mf4AwJgqMX5MejBmU9PB_gieDjL8yX8giRPUY5LQ5-k19-tgIOhAtQDJu0hyQNx7NaYz6IeXtvD6hIFWgvhQRbtKWU'
+	# p=get_page_soup(url)
+	# print(p)
+	def dummy(x):
+		print(x)
+
+	data=[1,2,3,4,5,6,7,'asa','vv','r43v']
+	multi_thread(dummy,data)

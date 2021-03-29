@@ -19,8 +19,8 @@ def fread(path):
 	f=open(path,'r+',encoding='utf-8').read()
 	return f
 
-def fwrite(fname,content):
-	f=open(fname,"w+",errors="ignore")
+def fwrite(fpath,content):
+	f=open(fpath,"w+",errors="ignore")
 	f.write(content)
 
 def fappend(fname,content):
@@ -30,12 +30,13 @@ def fappend(fname,content):
 def touch(fpath):
 	head=os.path.split(fpath)[0]
 	os.makedirs(head,exist_ok=True)
-	if not os.path.exists(fpath): 
+	if not os.path.exists(fpath):
 		open(fpath,"w+",errors="ignore").close()
 		print('Touched',fpath)
+
+
+
 #---------------------------
-
-
 def list_files_by_time(folder):
 	jobFileQueue=[folder+x for x in os.listdir(folder)]
 	jobFileQueue.sort(key=os.path.getmtime)
@@ -49,6 +50,7 @@ def cleanup():
 
 #------------------IMPORT HELPER
 def add_pwd_for_imports(pwf):
+	# pwf=present_working_file
 	import sys
 	sys.path.append(os.path.dirname(pwf))
 
@@ -103,9 +105,7 @@ def auto_pip(modulesList,mode='install'):
 	if mode=='install': 
 		if pipInstallSignal==True: 
 			proc=sp.run('pip install {} -U'.format(" ".join(modulesList)),text=True,shell=1)
-		else: print(f'{modulesList} were already installed'); 
-		proc.kill()
-		return 1 
+		else: print(f'{modulesList} were already installed'); return 1 
 
 	if mode=='uninstall': 
 		if pipUninstallSignal==True: 
@@ -154,7 +154,15 @@ def jdumplines(dictonary,indent=None): #return string
 	return json.dumps(dictonary,indent=indent)
 
 
+#---------------------------
+def hash_db(hashkey,*hashvalue,dirname='./LOCAL_DATABASE/'):
+	path=dirname+hashkey
 
+	try:
+		return jload(path)
+	except Exception as e:
+		if hashvalue:#write inputted value to memory
+			fwrite(path,jdumps(hashvalue[0]))
 
 
 #=============== PARALLELISM
@@ -164,8 +172,8 @@ def asyncfn(fn, args):
 	x=threading.Thread(target=fn,args=args);x.start()
 	return x
 
-
-
+def threadQueue(workQueue,worker):
+	pass
 
 def parallelFunction(functionVariableName,threadCount):
 	''' BEST USED FOR INTERNET ATTACKS OR REPETITIVE TASKS'''
@@ -181,16 +189,17 @@ def parallelFunction(functionVariableName,threadCount):
 
 
 #===============WEB FUNCTIONS
-headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0'}
 
+spoofBrowser = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0'}
 def make_session_pool():
 	import requests
 	return [requests.Session() for x in range(3)]
 
 
-def get_page(url): #return a page req object and retrive text later
+def get_page(url,headers={}): #return a page req object and retrive text later
 	import requests	
-	req=requests.get(url,stream=True)
+	# headers=headers.update(spoofBrowser)
+	req=requests.get(url,stream=True,headers=headers)
 	if not req: #send headers only when invalid response
 		req = requests.get(url,headers=headers)
 	return req
@@ -199,8 +208,8 @@ def make_soup(markup):
 	from bs4 import BeautifulSoup as soup
 	return soup(markup,'html.parser')
 
-def get_page_soup(url):
-	return make_soup(get_page(url).text)
+def get_page_soup(url,headers={}):
+	return make_soup(get_page(url,headers=headers).text)
 
 def get_page_selenium(url,headless=True,strategy='normal'):
 	from selenium import webdriver as wd
@@ -212,7 +221,7 @@ def get_page_selenium(url,headless=True,strategy='normal'):
 		client 	= wd.Firefox(options=opts);
 		client.get(url);
 		markup= client.page_source;
-		return make_soup(markup)
+		return client,markup
 	except Exception as e:	client.quit();	print("browser exit due to error"+str(e))
 
 def push_tab(client,url):
@@ -231,51 +240,67 @@ def wlan_ip():
 
 
 
+class CONSTANTS:
+	def get_ascii():
+		r1=range(ord("0"),ord("9")+1)
+		r2=range(ord("a"),ord("z")+1)
+		r3=range(ord("A"),ord("Z")+1)
+		enum=map(list, [r1,r2,r3])
+		enum=[chr(el) for y in enum for el in y ]
+		return enum
+
+
+
+def randstring(length):
+	enkrypted="".join(random.choices(CONSTANTS.get_ascii() ,k=length))
+
 
 #______________________________________________
 #@#$%@#$%#$%#$%#+++CRYPTOGRAPHY+++#@$#@$#@$!@# 
 class Swamicrypt:
-	'''	usage : passwd=Swamicrypt('password')
+	'''	
+		usage : passwd=Swamicrypt('password')
 		print(passwd.credentials)
 	'''
 	def __init__(self, basepassword):
 		self.basepassword= basepassword
 		self.credentials= self.make_key()
+		self.key,self.enkrypted= (self.credentials)
  
-	def make_cryptspace(self):
-		space=  [chr(x) for x in range(ord("0"),ord("9")+1)]
-		space+= [chr(x) for x in range(ord("a"),ord("z")+1)]
-		space+= [chr(x) for x in range(ord("A"),ord("Z")+1)]
-		return space
+
  
-	def cryptx(self,strength=4):
-		keySpace="".join(random.choices(self.make_cryptspace() ,k=strength*len(self.basepassword)))
-		return (keySpace)
+	def randstring(self,strength=4):
+		enkrypted="".join(random.choices(CONSTANTS.get_ascii() ,k=strength*len(self.basepassword)))
+		return (enkrypted)
 
 	def make_key(self):
-		stringx,keySpace=self.basepassword, self.cryptx(strength=4)
-		ks_indices=random.sample(list(enumerate(keySpace)) ,k=len(stringx))
-		ord_add=[ord(s)+ord(p[1]) for s,p in zip(stringx,ks_indices)]
+		basepassword=self.basepassword
+		enkrypted=self.randstring(strength=4)
+		ks_indices=random.sample(list(enumerate(enkrypted)) ,k=len(basepassword))
+		ord_add=[ord(s)+ord(p[1]) for s,p in zip(basepassword,ks_indices)]
 		key=[str(ki[0])+'+'+str(oa) for ki,oa in zip(ks_indices,ord_add)]
 		key='.'.join(key)
-		return key,keySpace
+		return key,enkrypted
 
-	def decryptx(credentials):
-		key,keyspace=credentials
+	def decryptx(self,key,enkrypted):
 		key=key.split('.')
 		imods=[x.split('+') for x in key]
-		orignalPassword=[ chr(int(x[1]) - ord(keyspace[int(x[0])])) for x in imods ]
+		orignalPassword=[ chr(int(x[1]) - ord(enkrypted[int(x[0])])) for x in imods ]
 		return "".join(orignalPassword)
 
-if __name__ == '__main__':
-	# print(f"hello {'anshil':10} poller podder yes papa")
-	# L=['app','cas','sacas','asdas','asdwewe','3322dsds','vvxx']
-	# print(shuffle(L))
-	# url='https://www.mycryptopedia.com/crypto-trading-signals-an-ultimates-beginners-guide/?__cf_chl_captcha_tk__=76b71110f18b3829e833a42bed2e05eeb1be6ad4-1613428240-0-AdjBdGzKi81lzbixDDK5cHd7-ZF-HwwjQYo2-vqJ6gZAp3ltr-0GLclQ7Uy_H1EZqHNqScOpBRCtmJN7AfRVAtBGFBVX8Pm5zjq4ZWMInwryEuIpgYM_9zsN2dpus92sINzjgcRHC5tOUpNBpLYe4zOda1mfyfNQu-Df2Sn_rRKsESiOIOWaXoxic5qpDuQIdIDr76XwMpzc8yGVEz8Hjuj0bYgULPyPTY-IZpSxTw-HeK8h1vI4Bnc5Aj6l5YN4ARGqsYyXTj7oWiDR4MKx4lSZsDQwuxBxtV-sdYJRgPRB0EOQ5s3VYoKb7Lh36V1G6GqWTxDPKjc1eeps7nS3Y2O7SS6L6uyrAwRRgwJuUJrCE8eyLIrC7bnE9jVLHPWOov1vfKiX_rYtTHGtw4Wp-gZHgP5Uh2yEbzuTynYc6uZjLrIYp8osmdy3Mhz8dZYX4eVYUcxD3qWkUFY6g8Nwu9YwWoHZ4HqykG1xeNU_ey-ja9rv3f3XBrfulBBC1Mf4AwJgqMX5MejBmU9PB_gieDjL8yX8giRPUY5LQ5-k19-tgIOhAtQDJu0hyQNx7NaYz6IeXtvD6hIFWgvhQRbtKWU'
-	# p=get_page_soup(url)
-	# print(p)
-	def dummy(x):
-		print(x)
+def hash(string):
+	import hashlib
+	return hashlib.md5(string.encode('utf-8')).hexdigest()
 
-	data=[1,2,3,4,5,6,7,'asa','vv','r43v']
-	multi_thread(dummy,data)
+def timeit(fn,*args):
+	import time
+	ts=time.time()
+	fn(*args)
+	te=time.time()
+	print("T delta =",te-ts)
+
+
+if __name__ == '__main__':
+
+	p=get_page('https://zeenews.india.com/india/largest-asteroid-to-come-closest-to-earth-today-at-124000-kmph-2349428.html')
+	print(p.text)

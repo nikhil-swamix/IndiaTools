@@ -34,31 +34,16 @@ def touch(fpath):
 		open(fpath,"w+",errors="ignore").close()
 		print('Touched',fpath)
 
-
-
-#---------------------------
-def list_files_by_time(folder):
+def list_files_timesorted(folder):
 	jobFileQueue=[folder+x for x in os.listdir(folder)]
 	jobFileQueue.sort(key=os.path.getmtime)
 	return (jobFileQueue)
-
-def cleanup():
-	import shutil
-	try: shutil.rmtree('__pycache__')
-	except :pass
-# cleanup() 
-
-#------------------IMPORT HELPER
-def add_pwd_for_imports(pwf):
-	# pwf=present_working_file
-	import sys
-	sys.path.append(os.path.dirname(pwf))
 
 #------------------RANDOMIZERS
 def randindex(L):
 	return random.randrange(len(L)) # get random index
 
-def pickrandom(L):
+def poprandom(L):
 	i = randindex(L) 
 	L[i], L[-1] = L[-1], L[i] # swap with the last element
 	return L.pop() # pop last element O(1)
@@ -69,14 +54,11 @@ def shuffle(L):
 # =============== AUTO_PACKAGE
 def auto_pip(modulesList,mode='install'):
 	'''
-		+DOC: automatically Install Pip Packages Without Missing Module 
-		Error before code runs and upgrades pip if its old, failsafe and fast
-		can be invoked within code rather than running pip install blah 
-		from cmd/terminal. mode can be +1 or -1, self explanatory.
-		+USAGE: auto_pip('mode',[modules])
-				auto_pip('install',['pytorch','numpy','etc...']) 
-		where mode can be {install,uninstall,download} and modules is
-		a standard py list ['numpy','pandas','tensorflow==1.15.1' and so on...]
+		+DOC: 
+			automatically Install Pip Packages With Missing Module && upgrades pip if its old, 
+		+USAGE: 
+			auto_pip('mode',[modules,...]) #where mode can be {install,uninstall,download} and modules is
+			auto_pip('install',['pytorch','numpy','etc...']) 
 		+NOTES: downloading can be useful if want to install later 
 		from local source and avoid network cost.
 	'''
@@ -117,18 +99,12 @@ def auto_pip(modulesList,mode='install'):
 		print('auto_pip Run Success')
 		return proc.returncode
 
-
-
-
 # =============== Miscalleneous
-#CACHE--------------------------------------
 class Cache: 
-	pass#CREATES CACHE to save future calls cost
-
-
-
-
-
+	'''
+		CREATES CACHE to save future calls cost
+	'''
+	pass
 
 # ===============JSON FUNCTIONS
 import json
@@ -156,6 +132,11 @@ def jdumplines(dictonary,indent=None): #return string
 
 #---------------------------
 def hash_db(hashkey,*hashvalue,dirname='./LOCAL_DATABASE/'):
+	''' 
+		if : an index(hashkey) is given then check is file exists and open and return a dict{}
+		else : if second argument (hashvalue[]) is given then create a dict
+	'''
+
 	path=dirname+hashkey
 
 	try:
@@ -167,22 +148,19 @@ def hash_db(hashkey,*hashvalue,dirname='./LOCAL_DATABASE/'):
 
 #=============== PARALLELISM
 
-def asyncfn(fn, args):
-	import threading
-	x=threading.Thread(target=fn,args=args);x.start()
-	return x
+class Parallelizer:
+	def tpoolstart(fn,threadCount):
+		pool=[threading.Thread(target=fn) for x in range(threadCount)]
+		print(f'INFO: Starting {threadCount} threads')
+		[x.start() for x in pool]
+		return pool
 
-def threadQueue(workQueue,worker):
-	pass
+	def tpooljoin(tp):
+		[x.join() for x in tp]
 
-def parallelFunction(functionVariableName,threadCount):
-	''' BEST USED FOR INTERNET ATTACKS OR REPETITIVE TASKS'''
-	import threading
-	pool=[]
-	for i in range(threadCount):
-		thread=threading.Thread(name='parallelFunction', target=functionVariableName)
-		pool.append(thread)
-		pool[i].start()
+
+	def tpoolexec(fn,threadCount=50):
+		Parallelizer.tpooljoin(Parallelizer.tpoolstart(fn,threadCount))
 
 
 
@@ -190,16 +168,18 @@ def parallelFunction(functionVariableName,threadCount):
 
 #===============WEB FUNCTIONS
 
-spoofBrowser = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0'}
-def make_session_pool():
-	import requests
-	return [requests.Session() for x in range(3)]
-
+import requests	
+def make_session_pool(count=1):
+	return [requests.Session() for x in range(count)]
 
 def get_page(url,headers={}): #return a page req object and retrive text later
-	import requests	
-	# headers=headers.update(spoofBrowser)
-	req=requests.get(url,stream=True,headers=headers)
+	UserAgent={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0'}
+
+	headers.update(UserAgent)
+	# print(headers)
+	# spoofBrowser = {'User-Agent': UA,'Cookie':Cookie}
+	# headers=headers
+	req=requests.get(url,headers=headers)
 	if not req: #send headers only when invalid response
 		req = requests.get(url,headers=headers)
 	return req
@@ -211,18 +191,24 @@ def make_soup(markup):
 def get_page_soup(url,headers={}):
 	return make_soup(get_page(url,headers=headers).text)
 
-def get_page_selenium(url,headless=True,strategy='normal'):
+
+def make_selenium_driver(headless=True,strategy='normal',timeout=2):
 	from selenium import webdriver as wd
-	opts = wd.firefox.options.Options();	
+	opts = wd.firefox.options.Options();
 	opts.page_load_strategy = strategy
-	if headless: opts.headless = True 
+	if headless: opts.headless = True
 	# opts.add_argument("--headless") 		#works standalone
+	driver=wd.Firefox(options=opts)
+	# driver.set_page_load_timeout(2)	
+	driver.implicitly_wait(10)	
+	return driver 
+
+def get_page_selenium(driver,url):
 	try:
-		client 	= wd.Firefox(options=opts);
-		client.get(url);
-		markup= client.page_source;
-		return client,markup
-	except Exception as e:	client.quit();	print("browser exit due to error"+str(e))
+		driver.get(url)
+		return driver.page_source
+	except Exception as e:	
+		print((e))
 
 def push_tab(client,url):
 	client.execute_script("window.open('{}', '_blank')".format(url))
@@ -236,7 +222,7 @@ def wlan_ip():
             scan=1
         if scan:
             if 'ipv4' in i:
-                return i.split(':')[1].strip()
+                print (i.split(':')[1].strip())
 
 
 
@@ -251,8 +237,8 @@ class CONSTANTS:
 
 
 
-def randstring(length):
-	enkrypted="".join(random.choices(CONSTANTS.get_ascii() ,k=length))
+def randomstring(length):
+	return "".join(random.choices(CONSTANTS.get_ascii() ,k=length))
 
 
 #______________________________________________
@@ -262,27 +248,23 @@ class Swamicrypt:
 		usage : passwd=Swamicrypt('password')
 		print(passwd.credentials)
 	'''
-	def __init__(self, basepassword):
-		self.basepassword= basepassword
-		self.credentials= self.make_key()
+	def __init__(self, basepassword,strength=4):
+		self.strength=strength
+		self.credentials= self.generate_key_and_lock(basepassword)
 		self.key,self.enkrypted= (self.credentials)
- 
 
- 
-	def randstring(self,strength=4):
-		enkrypted="".join(random.choices(CONSTANTS.get_ascii() ,k=strength*len(self.basepassword)))
-		return (enkrypted)
+	def generate_key_and_lock(self,basepassword):
+		randlength=self.strength*len(basepassword)
+		randstr=randomstring(randlength)
+		ks_indices=[(i,v) for i,v in zip(range(randlength),randstr)]
+		ks_indices=[poprandom(ks_indices) for k in basepassword]
+		# ks_indices=random.sample([(i,v) for i,v in randstr] ,k=len(basepassword))
+		ord_add=[ord(s)+ord(ki[1]) for s,ki in zip(basepassword,ks_indices)]
+		key='.'.join([str(ki[0])+'+'+str(oa) for ki,oa in zip(ks_indices,ord_add)])
+		return key,randstr
 
-	def make_key(self):
-		basepassword=self.basepassword
-		enkrypted=self.randstring(strength=4)
-		ks_indices=random.sample(list(enumerate(enkrypted)) ,k=len(basepassword))
-		ord_add=[ord(s)+ord(p[1]) for s,p in zip(basepassword,ks_indices)]
-		key=[str(ki[0])+'+'+str(oa) for ki,oa in zip(ks_indices,ord_add)]
-		key='.'.join(key)
-		return key,enkrypted
-
-	def decryptx(self,key,enkrypted):
+	def decryptx(self,keyPassTuple):
+		key,enkrypted = keyPassTuple
 		key=key.split('.')
 		imods=[x.split('+') for x in key]
 		orignalPassword=[ chr(int(x[1]) - ord(enkrypted[int(x[0])])) for x in imods ]
@@ -292,15 +274,38 @@ def hash(string):
 	import hashlib
 	return hashlib.md5(string.encode('utf-8')).hexdigest()
 
-def timeit(fn,*args):
-	import time
+import time
+def timeit(fn,*args,times=1000):
 	ts=time.time()
-	fn(*args)
+	print(f'Running: {fn.__name__} | {times} Times')
+	for x in range(times):
+		fn(*args)
 	te=time.time()
-	print("T delta =",te-ts)
+	print("T delta =",(te-ts)*1000,'ms')
+
+def header_parser(firefoxAllHeaders):
+	serializedHeaders=list((firefoxAllHeaders).values())[0]['headers']
+	return { k:v for k,v in [x.values() for x in serializedHeaders] }
+
+def cookie_parser():
+	...
 
 
 if __name__ == '__main__':
+	# teachomatrixHeaders={"x-auth-token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoibmlraGlsIHN3YW1pIiwiZW1haWwiOiJuaWtoaWxzd2FtaTFAZ21haWwuY29tIiwiX2lkIjoiNjA0MzE2OTdmZDFjMTEwMDEzZjkwY2FhIiwidHlwZSI6IlMiLCJpYXQiOjE2MTU2Mjk5ODV9.gtsW-3SocTCVoquNhpZHs716mwmb6RircEZGKLDU1TI"}
+	# urlEndpoint='https://teachomatrix.tk/api/quiz/605c66cc4be5d100138b7150/responses'
+	# response=get_page(urlEndpoint,headers=teachomatrixHeaders).text
+	# print((response))
+	...
+	x=Swamicrypt('somepassword')
 
-	p=get_page('https://zeenews.india.com/india/largest-asteroid-to-come-closest-to-earth-today-at-124000-kmph-2349428.html')
-	print(p.text)
+	def testSwamicryptSpeed():
+		x.decryptx(x.credentials)
+
+	def testWebServerSpeed():
+		requests.get('http://localhost:1111/')
+
+	timeit(testWebServerSpeed,times=10)
+
+	# print(x.decryptx(x.credentials))
+		

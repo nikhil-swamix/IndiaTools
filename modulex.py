@@ -1,6 +1,6 @@
 #================= IO RELATED
-# import os
-# import random
+import os
+import random
 
 import sys
 if sys.executable.endswith('pypy3.exe'):
@@ -11,7 +11,7 @@ if sys.executable.endswith('pypy3.exe'):
 		f'C:\\Users\\{user}\\AppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages',
 		]
 	sys.path.extend(pathlist)
-	print(sys.path)
+	# print(sys.path)
 
 #---------------------------
 def setload(path,seperator='\n'):
@@ -22,7 +22,8 @@ def setwrite(path,setDataType):
 
 def setupdate(path,newset):
 	diff=newset - setload(path)
-	fappend(path,diff)
+	if diff:
+		fappend(path,'\n'.join(diff))
 
 #---------------------------
 def fread(path):
@@ -34,8 +35,9 @@ def fwrite(fpath,content):
 	f.write(content)
 
 def fappend(fname,content):
-	f=open(fname,"a+",errors="ignore")
-	f.write(content+'\n')
+	f=open(fname,"a")
+	print('start actual write')
+	f.write(content)
 
 def touch(fpath):
 	head=os.path.split(fpath)[0]
@@ -61,7 +63,37 @@ def poprandom(L):
 def shuffle(L):
 	return [pickrandom(L) for x in range(len(L))]
 
-# =============== AUTO_PACKAGE
+#GENERATORS___________________________________
+def get_ascii():
+	# numbers,lower,upper=ord("0")
+	# r1=range(ord("0"),ord("9")+1)
+	# r2=range(ord("a"),ord("z")+1)
+	# r3=range(ord("A"),ord("Z")+1)
+	# print(r1,r2,r3)
+	# enum=map(list, [r1,r2,r3])
+	# enum=[chr(el) for y in enum for el in y ]
+	r= ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9',  \
+	'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', \
+	'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', \
+	'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', \
+	'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', \
+	'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z')
+	return r
+
+def randomstring(length):
+	asciirange=get_ascii()
+	lenascii=len(asciirange)
+	print('str concat start')
+	fp=os.open('apple.txt',os.O_WRONLY )
+	r=[str(asciirange[random.randrange(lenascii)]).encode() for x in range(length) ]
+	return ''.join(r)
+
+
+def hash(string):
+	import hashlib
+	return hashlib.md5(string.encode('utf-8')).hexdigest()
+
+#AUTO_PIP______________________________________
 def auto_pip(modulesList,mode='install'):
 	'''
 		+DOC: 
@@ -226,29 +258,6 @@ def wlan_ip():
             if 'ipv4' in i:
                 print (i.split(':')[1].strip())
 
-# GENERATORS___________________________________
-def get_ascii():
-	# numbers,lower,upper=ord("0")
-	# r1=range(ord("0"),ord("9")+1)
-	# r2=range(ord("a"),ord("z")+1)
-	# r3=range(ord("A"),ord("Z")+1)
-	# print(r1,r2,r3)
-	# enum=map(list, [r1,r2,r3])
-	# enum=[chr(el) for y in enum for el in y ]
-	r= ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',  \
-	'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', \
-	'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', \
-	'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', \
-	'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', \
-	'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-	return r
-
-def randomstring(length):
-	return "".join(random.choices(get_ascii() ,k=length))
-
-def hash(string):
-	import hashlib
-	return hashlib.md5(string.encode('utf-8')).hexdigest()
 
 # MONITORS _____________________________________
 def timeit(fn,*args,times=1000):
@@ -260,27 +269,22 @@ def timeit(fn,*args,times=1000):
 	tdelta=time.time() - ts
 	print(f"TDelta:{(tdelta)*1000}ms | avgCallTime: {(tdelta/times)*1000}ms")
 
-
-if __name__ == '__main__':
-	# teachomatrixHeaders={"x-auth-token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoibmlraGlsIHN3YW1pIiwiZW1haWwiOiJuaWtoaWxzd2FtaTFAZ21haWwuY29tIiwiX2lkIjoiNjA0MzE2OTdmZDFjMTEwMDEzZjkwY2FhIiwidHlwZSI6IlMiLCJpYXQiOjE2MTU2Mjk5ODV9.gtsW-3SocTCVoquNhpZHs716mwmb6RircEZGKLDU1TI"}
-	# urlEndpoint='https://teachomatrix.tk/api/quiz/605c66cc4be5d100138b7150/responses'
-	# response=get_page(urlEndpoint,headers=teachomatrixHeaders).text
-	# print((response))
-
+class Tests:
 	def testWebServerStress():
 		def reqfn():
 			d=requests.get(url2)
 			print('fetch success',d.text)
-
+		url1='http://swamix.com/'
+		url2='http://swamix.com/api/news/tech'
 		Parallelizer.tpoolexec(reqfn,threadCount=100)
 
 
+if __name__ == '__main__':
+	a={'apple','ball','cat','cotton'}
+	# b={'newitem1',randomstring(5)}
+	fp='./testset.txt'
+	touch(fp)
 
-	url1='http://swamix.com/'
-	url2='http://swamix.com/api/news/tech'
-	# timeit(testWebServerStress,times=1)
-
-
-	timeit(get_ascii,times=1_000_000)
-
-	print()	
+	# timeit(fun,times=10)
+	# setupdate(fp,b)
+	# setwrite(fp,a)

@@ -3,10 +3,10 @@ import os
 import random
 import sys
 
-# if sys.executable.endswith('pypy3.exe'):
-# 	print(sys.executable)
-# 	pathlist=['C:\\Users\\dell\\Documents\\GitHub\\modulex', 'C:\\Users\\dell\\AppData\\Local\\Programs\\Python\\Python37\\python37.zip', 'C:\\Users\\dell\\AppData\\Local\\Programs\\Python\\Python37\\DLLs', 'C:\\Users\\dell\\AppData\\Local\\Programs\\Python\\Python37\\lib', 'C:\\Users\\dell\\AppData\\Local\\Programs\\Python\\Python37', 'C:\\Users\\dell\\AppData\\Roaming\\Python\\Python37\\site-packages', 'C:\\Users\\dell\\AppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages', 'C:\\Users\\dell\\AppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages\\win32', 'C:\\Users\\dell\\AppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages\\win32\\lib', 'C:\\Users\\dell\\AppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages\\Pythonwin']
-# 	sys.path.extend(pathlist)
+if sys.executable.endswith('pypy3.exe'):
+	# print(sys.executable)
+	pathlist=['C:\\Users\\dell\\Documents\\GitHub\\modulex', 'C:\\Users\\dell\\AppData\\Local\\Programs\\Python\\Python37\\python37.zip', 'C:\\Users\\dell\\AppData\\Local\\Programs\\Python\\Python37\\DLLs', 'C:\\Users\\dell\\AppData\\Local\\Programs\\Python\\Python37\\lib', 'C:\\Users\\dell\\AppData\\Local\\Programs\\Python\\Python37', 'C:\\Users\\dell\\AppData\\Roaming\\Python\\Python37\\site-packages', 'C:\\Users\\dell\\AppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages', 'C:\\Users\\dell\\AppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages\\win32', 'C:\\Users\\dell\\AppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages\\win32\\lib', 'C:\\Users\\dell\\AppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages\\Pythonwin']
+	sys.path.extend(pathlist)
 
 #---------------------------
 def setload(path,seperator='\n'):

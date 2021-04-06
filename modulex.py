@@ -1,7 +1,12 @@
 #================= IO RELATED
 import os
 import random
+import sys
 
+# if sys.executable.endswith('pypy3.exe'):
+# 	print(sys.executable)
+# 	pathlist=['C:\\Users\\dell\\Documents\\GitHub\\modulex', 'C:\\Users\\dell\\AppData\\Local\\Programs\\Python\\Python37\\python37.zip', 'C:\\Users\\dell\\AppData\\Local\\Programs\\Python\\Python37\\DLLs', 'C:\\Users\\dell\\AppData\\Local\\Programs\\Python\\Python37\\lib', 'C:\\Users\\dell\\AppData\\Local\\Programs\\Python\\Python37', 'C:\\Users\\dell\\AppData\\Roaming\\Python\\Python37\\site-packages', 'C:\\Users\\dell\\AppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages', 'C:\\Users\\dell\\AppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages\\win32', 'C:\\Users\\dell\\AppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages\\win32\\lib', 'C:\\Users\\dell\\AppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages\\Pythonwin']
+# 	sys.path.extend(pathlist)
 
 #---------------------------
 def setload(path,seperator='\n'):
@@ -99,24 +104,22 @@ def auto_pip(modulesList,mode='install'):
 		print('auto_pip Run Success')
 		return proc.returncode
 
-# =============== Miscalleneous
+#CACHING-------------------------
 class Cache: 
 	'''
 		CREATES CACHE to save future calls cost
 	'''
 	pass
 
-# ===============JSON FUNCTIONS
+#JSON----------------------------
 import json
-def jloads(string): #return dict
-	return json.loads(string)
-def jload(path): #return dict
-	return json.load(open(path))
+def jloads(string): return json.loads(string) #dict
 
-def jdumps(dictonary,indent=4): #return string
-	return json.dumps(dictonary,indent=indent)
-def jdump(dictonary,path): #write to disk
-	return json.dump(dictonary,open(path,"w+"),indent=4)
+def jload(path): 	return json.load(open(path)) #return dict
+
+def jdumps(dictonary,indent=4): return json.dumps(dictonary,indent=indent) #return string
+
+def jdump(dictonary,path): 	return json.dump(dictonary,open(path,"w+"),indent=4) #write to disk
 
 def jloadlines(path):
 	jsonlines=open(path,'r').readlines()
@@ -130,26 +133,23 @@ def jdumplines(dictonary,indent=None): #return string
 	return json.dumps(dictonary,indent=indent)
 
 
-#---------------------------
+#SIMPLE-DB_________________________________
 def hash_db(hashkey,*hashvalue,dirname='./LOCAL_DATABASE/'):
 	''' 
 		if : an index(hashkey) is given then check is file exists and open and return a dict{}
 		else : if second argument (hashvalue[]) is given then create a dict
 	'''
-
 	path=dirname+hashkey
-
 	try:
 		return jload(path)
 	except Exception as e:
 		if hashvalue:#write inputted value to memory
 			fwrite(path,jdumps(hashvalue[0]))
 
-
-#=============== PARALLELISM
-
+#THREADING__________________________________
 class Parallelizer:
 	def tpoolstart(fn,threadCount):
+		import threading
 		pool=[threading.Thread(target=fn) for x in range(threadCount)]
 		print(f'INFO: Starting {threadCount} threads')
 		[x.start() for x in pool]
@@ -158,27 +158,17 @@ class Parallelizer:
 	def tpooljoin(tp):
 		[x.join() for x in tp]
 
-
 	def tpoolexec(fn,threadCount=50):
 		Parallelizer.tpooljoin(Parallelizer.tpoolstart(fn,threadCount))
 
-
-
-
-
-#===============WEB FUNCTIONS
-
+#WEBFN______________________________________
 import requests	
 def make_session_pool(count=1):
 	return [requests.Session() for x in range(count)]
 
 def get_page(url,headers={}): #return a page req object and retrive text later
 	UserAgent={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0'}
-
 	headers.update(UserAgent)
-	# print(headers)
-	# spoofBrowser = {'User-Agent': UA,'Cookie':Cookie}
-	# headers=headers
 	req=requests.get(url,headers=headers)
 	if not req: #send headers only when invalid response
 		req = requests.get(url,headers=headers)
@@ -191,15 +181,15 @@ def make_soup(markup):
 def get_page_soup(url,headers={}):
 	return make_soup(get_page(url,headers=headers).text)
 
-
-def make_selenium_driver(headless=True,strategy='normal',timeout=2):
+def make_selenium_driver(headless=True,strategy='normal',timeout=5):
 	from selenium import webdriver as wd
 	opts = wd.firefox.options.Options();
 	opts.page_load_strategy = strategy
-	if headless: opts.headless = True
-	# opts.add_argument("--headless") 		#works standalone
+	if headless: 
+		opts.headless = True
+	# opts.add_argument("--headless")
 	driver=wd.Firefox(options=opts)
-	# driver.set_page_load_timeout(2)	
+	driver.set_page_load_timeout(timeout)
 	driver.implicitly_wait(10)	
 	return driver 
 
@@ -209,6 +199,13 @@ def get_page_selenium(driver,url):
 		return driver.page_source
 	except Exception as e:	
 		print((e))
+
+def header_parser(firefoxAllHeaders):
+	serializedHeaders=list((firefoxAllHeaders).values())[0]['headers']
+	return { k:v for k,v in [x.values() for x in serializedHeaders] }
+
+def cookie_parser():
+	...
 
 def push_tab(client,url):
 	client.execute_script("window.open('{}', '_blank')".format(url))
@@ -224,71 +221,39 @@ def wlan_ip():
             if 'ipv4' in i:
                 print (i.split(':')[1].strip())
 
-
-
-class CONSTANTS:
-	def get_ascii():
-		r1=range(ord("0"),ord("9")+1)
-		r2=range(ord("a"),ord("z")+1)
-		r3=range(ord("A"),ord("Z")+1)
-		enum=map(list, [r1,r2,r3])
-		enum=[chr(el) for y in enum for el in y ]
-		return enum
-
-
+# GENERATORS___________________________________
+def get_ascii():
+	# numbers,lower,upper=ord("0")
+	# r1=range(ord("0"),ord("9")+1)
+	# r2=range(ord("a"),ord("z")+1)
+	# r3=range(ord("A"),ord("Z")+1)
+	# print(r1,r2,r3)
+	# enum=map(list, [r1,r2,r3])
+	# enum=[chr(el) for y in enum for el in y ]
+	r= ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',  \
+	'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', \
+	'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', \
+	'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', \
+	'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', \
+	'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+	return r
 
 def randomstring(length):
-	return "".join(random.choices(CONSTANTS.get_ascii() ,k=length))
-
-
-#______________________________________________
-#@#$%@#$%#$%#$%#+++CRYPTOGRAPHY+++#@$#@$#@$!@# 
-class Swamicrypt:
-	'''	
-		usage : passwd=Swamicrypt('password')
-		print(passwd.credentials)
-	'''
-	def __init__(self, basepassword,strength=4):
-		self.strength=strength
-		self.credentials= self.generate_key_and_lock(basepassword)
-		self.key,self.enkrypted= (self.credentials)
-
-	def generate_key_and_lock(self,basepassword):
-		randlength=self.strength*len(basepassword)
-		randstr=randomstring(randlength)
-		ks_indices=[(i,v) for i,v in zip(range(randlength),randstr)]
-		ks_indices=[poprandom(ks_indices) for k in basepassword]
-		# ks_indices=random.sample([(i,v) for i,v in randstr] ,k=len(basepassword))
-		ord_add=[ord(s)+ord(ki[1]) for s,ki in zip(basepassword,ks_indices)]
-		key='.'.join([str(ki[0])+'+'+str(oa) for ki,oa in zip(ks_indices,ord_add)])
-		return key,randstr
-
-	def decryptx(self,keyPassTuple):
-		key,enkrypted = keyPassTuple
-		key=key.split('.')
-		imods=[x.split('+') for x in key]
-		orignalPassword=[ chr(int(x[1]) - ord(enkrypted[int(x[0])])) for x in imods ]
-		return "".join(orignalPassword)
+	return "".join(random.choices(get_ascii() ,k=length))
 
 def hash(string):
 	import hashlib
 	return hashlib.md5(string.encode('utf-8')).hexdigest()
 
-import time
+# MONITORS _____________________________________
 def timeit(fn,*args,times=1000):
+	import time
 	ts=time.time()
 	print(f'Running: {fn.__name__} | {times} Times')
 	for x in range(times):
 		fn(*args)
-	te=time.time()
-	print("T delta =",(te-ts)*1000,'ms')
-
-def header_parser(firefoxAllHeaders):
-	serializedHeaders=list((firefoxAllHeaders).values())[0]['headers']
-	return { k:v for k,v in [x.values() for x in serializedHeaders] }
-
-def cookie_parser():
-	...
+	tdelta=time.time() - ts
+	print(f"TDelta:{(tdelta)*1000}ms | avgCallTime: {(tdelta/times)*1000}ms")
 
 
 if __name__ == '__main__':
@@ -296,16 +261,21 @@ if __name__ == '__main__':
 	# urlEndpoint='https://teachomatrix.tk/api/quiz/605c66cc4be5d100138b7150/responses'
 	# response=get_page(urlEndpoint,headers=teachomatrixHeaders).text
 	# print((response))
-	...
-	x=Swamicrypt('somepassword')
 
-	def testSwamicryptSpeed():
-		x.decryptx(x.credentials)
+	def testWebServerStress():
+		def reqfn():
+			d=requests.get(url2)
+			print('fetch success',d.text)
 
-	def testWebServerSpeed():
-		requests.get('http://localhost:1111/')
+		Parallelizer.tpoolexec(reqfn,threadCount=100)
 
-	timeit(testWebServerSpeed,times=10)
 
-	# print(x.decryptx(x.credentials))
-		
+
+	url1='http://swamix.com/'
+	url2='http://swamix.com/api/news/tech'
+	# timeit(testWebServerStress,times=1)
+
+
+	timeit(get_ascii,times=1_000_000)
+
+	print()	

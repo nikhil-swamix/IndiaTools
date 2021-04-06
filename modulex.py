@@ -65,13 +65,6 @@ def shuffle(L):
 
 #GENERATORS___________________________________
 def get_ascii():
-	# numbers,lower,upper=ord("0")
-	# r1=range(ord("0"),ord("9")+1)
-	# r2=range(ord("a"),ord("z")+1)
-	# r3=range(ord("A"),ord("Z")+1)
-	# print(r1,r2,r3)
-	# enum=map(list, [r1,r2,r3])
-	# enum=[chr(el) for y in enum for el in y ]
 	r= ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9',  \
 	'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', \
 	'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', \
@@ -83,11 +76,8 @@ def get_ascii():
 def randomstring(length):
 	asciirange=get_ascii()
 	lenascii=len(asciirange)
-	print('str concat start')
-	fp=os.open('apple.txt',os.O_WRONLY )
 	r=[str(asciirange[random.randrange(lenascii)]).encode() for x in range(length) ]
 	return ''.join(r)
-
 
 def hash(string):
 	import hashlib
@@ -106,14 +96,12 @@ def auto_pip(modulesList,mode='install'):
 	'''
 	modulesList=[modulesList] if isinstance(modulesList,str) else modulesList
 	import subprocess as sp
-	#>>> preflight check && upgrade if old
 	proc=sp.run('pip list',stdout=sp.PIPE,stderr=sp.PIPE,text=1)
 	if 'You should consider upgrading' in proc.stderr:
 		upgradeCommand=proc.stderr.split('\'')
 		sp.run(upgradeCommand[1])
 
 	pipInstallSignal,pipUninstallSignal= 0,0 #declare signals as 0,
-	#below dict-> true if module present against module name ex: numpy:True
 	satisfied={x:(x.lower() in proc.stdout.lower()) for x in modulesList} 
 	for k,v in satisfied.items():
 		print(k+'\t:preinstalled') if v else print(k,'is missing',end=' =|= ')
@@ -136,7 +124,6 @@ def auto_pip(modulesList,mode='install'):
 			proc=sp.run('pip uninstall -y {}'.format(" ".join(modulesList)),text=True,shell=0)
 		else: print(f'\n{modulesList} were already uninstalled'); return 1
 
-	#CHECK SUCCESS OF PROCESS
 	if proc.returncode==0:
 		print('auto_pip Run Success')
 		return proc.returncode
@@ -281,10 +268,3 @@ class Tests:
 
 if __name__ == '__main__':
 	a={'apple','ball','cat','cotton'}
-	# b={'newitem1',randomstring(5)}
-	fp='./testset.txt'
-	touch(fp)
-
-	# timeit(fun,times=10)
-	# setupdate(fp,b)
-	# setwrite(fp,a)

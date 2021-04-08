@@ -36,7 +36,6 @@ def fwrite(fpath,content):
 
 def fappend(fname,content):
 	f=open(fname,"a")
-	print('start actual write')
 	f.write(content)
 
 def touch(fpath):
@@ -172,18 +171,12 @@ def hash_db(hashkey,*hashvalue,dirname='./LOCAL_DATABASE/'):
 
 #THREADING__________________________________
 class Parallelizer:
-	def tpoolstart(fn,threadCount):
-		import threading
-		pool=[threading.Thread(target=fn) for x in range(threadCount)]
-		print(f'INFO: Starting {threadCount} threads')
-		[x.start() for x in pool]
-		return pool
-
-	def tpooljoin(tp):
-		[x.join() for x in tp]
-
-	def tpoolexec(fn,threadCount=50):
-		Parallelizer.tpooljoin(Parallelizer.tpoolstart(fn,threadCount))
+	def tpoolmap(fn,*iters,threads=16):
+		from concurrent.futures import ThreadPoolExecutor
+		print(f'__________ThreadPool Made with {threads} threads')
+		POOL=ThreadPoolExecutor(threads)
+		result=POOL.map(fn,*iters)
+		return result
 
 #WEBFN______________________________________
 import requests	
@@ -245,7 +238,6 @@ def wlan_ip():
             if 'ipv4' in i:
                 print (i.split(':')[1].strip())
 
-
 # MONITORS _____________________________________
 def timeit(fn,*args,times=1000):
 	import time
@@ -266,5 +258,18 @@ class Tests:
 		Parallelizer.tpoolexec(reqfn,threadCount=100)
 
 
+
+
 if __name__ == '__main__':
 	a={'apple','ball','cat','cotton'}
+	x=list(range(10))
+	y=[1,2,3,4,5,6,7,8]; y.reverse()
+
+	def fn(i):
+		print(i)
+		return i
+
+
+	result=Parallelizer.tpoolmap(fn,x)
+	print(list(result))
+	# print(dir(result))

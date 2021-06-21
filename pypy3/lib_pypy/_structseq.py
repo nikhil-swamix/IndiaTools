@@ -64,9 +64,9 @@ class structseqtype(type):
         for i,field in enumerate(extra_fields):
             field.index = None     # no longer relevant
 
-        assert '__new__' not in dict
         dict['_extra_fields'] = tuple(extra_fields)
-        dict['__new__'] = structseq_new
+        if '__new__' not in dict:
+            dict['__new__'] = structseq_new
         dict['__reduce__'] = structseq_reduce
         dict['__setattr__'] = structseq_setattr
         dict['__repr__'] = structseq_repr
@@ -121,8 +121,11 @@ def structseq_reduce(self):
     return type(self), (tuple(self), self.__dict__)
 
 def structseq_setattr(self, attr, value):
-    raise AttributeError("%r object has no attribute %r" % (
-        self.__class__.__name__, attr))
+    if attr not in type(self).__dict__:
+        raise AttributeError("%r object has no attribute %r" % (
+            self.__class__.__name__, attr))
+    else:
+        raise TypeError("readonly attribute")
 
 def structseq_repr(self):
     fields = {}

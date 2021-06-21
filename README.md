@@ -1,7 +1,7 @@
 
 # Modulex - Documentation
 
-Modulex
+functions available in Modulex
 
 ## *FILE FUNCTIONS*
 

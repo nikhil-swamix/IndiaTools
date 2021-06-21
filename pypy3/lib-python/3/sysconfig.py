@@ -61,7 +61,16 @@ _INSTALL_SCHEMES = {
         'scripts': '{base}/Scripts',
         'data': '{base}',
         },
-    # NOTE: When modifying "purelib" scheme, update site._get_path() too.
+    'pypy_nt': {
+        'stdlib': '{installed_base}/lib-{implementation_lower}',
+        'platstdlib': '{base}/lib-{implementation_lower}',
+        'purelib': '{base}/site-packages',
+        'platlib': '{base}/site-packages',
+        'include': '{installed_base}/include',
+        'platinclude': '{installed_base}/include',
+        'scripts': '{base}/Scripts',
+        'data'   : '{base}',
+        },
     'nt_user': {
         'stdlib': '{userbase}/{implementation}{py_version_nodot}',
         'platstdlib': '{userbase}/{implementation}{py_version_nodot}',
@@ -107,6 +116,8 @@ _CONFIG_VARS = None
 _USER_BASE = None
 
 
+# NOTE: site.py has copy of this function.
+# Sync it when modify this function.
 def _get_implementation():
     if '__pypy__' in sys.builtin_module_names:
         return 'PyPy'
@@ -166,10 +177,10 @@ if _PYTHON_BUILD:
 def _subst_vars(s, local_vars):
     try:
         return s.format(**local_vars)
-    except KeyError:
+    except KeyError as var:
         try:
             return s.format(**os.environ)
-        except KeyError as var:
+        except KeyError:
             raise AttributeError('{%s}' % var) from None
 
 def _extend_dict(target_dict, other_dict):
@@ -194,11 +205,14 @@ def _expand_vars(scheme, vars):
 
 
 def _get_default_scheme():
-    if '__pypy__' in sys.builtin_module_names:
-        return 'pypy'
-    elif os.name == 'posix':
+    if os.name == 'posix':
+        if '__pypy__' in sys.builtin_module_names:
+            return 'pypy'
         # the default scheme for posix is posix_prefix
         return 'posix_prefix'
+    if os.name == 'nt':
+        if '__pypy__' in sys.builtin_module_names:
+            return 'pypy_nt'
     return os.name
 
 
@@ -214,7 +228,7 @@ def _getuserbase():
 
     if os.name == "nt":
         base = os.environ.get("APPDATA") or "~"
-        return joinuser(base, "Python")
+        return joinuser(base, _get_implementation())
 
     if sys.platform == "darwin" and sys._framework:
         return joinuser("~", "Library", sys._framework,
@@ -361,7 +375,7 @@ def get_makefile_filename():
 
 
 def _get_sysconfigdata_name():
-    # FIXME: temporary hack for PyPy
+    # FIXME: hack for PyPy
     return '_sysconfigdata'
     return os.environ.get('_PYTHON_SYSCONFIGDATA_NAME',
         '_sysconfigdata_{abi}_{platform}_{multiarch}'.format(
@@ -436,6 +450,7 @@ def _generate_posix_vars():
 
 def _init_posix(vars):
     """Initialize the module as appropriate for POSIX systems."""
+    # _sysconfigdata is generated at build time, see _generate_posix_vars()
     name = _get_sysconfigdata_name()
     _temp = __import__(name, globals(), locals(), ['build_time_vars'], 0)
     build_time_vars = _temp.build_time_vars
@@ -444,15 +459,15 @@ def _init_posix(vars):
 def _init_non_posix(vars):
     """Initialize the module as appropriate for NT"""
     # set basic install directories
+    import _imp
     vars['LIBDEST'] = get_path('stdlib')
     vars['BINLIBDEST'] = get_path('platstdlib')
     vars['INCLUDEPY'] = get_path('include')
-    vars['EXT_SUFFIX'] = '.pyd'
+    vars['EXT_SUFFIX'] = _imp.extension_suffixes()[0]
     vars['EXE'] = '.exe'
     vars['VERSION'] = _PY_VERSION_SHORT_NO_DOT
     vars['BINDIR'] = os.path.dirname(_safe_realpath(sys.executable))
     # pypy: give us control over the ABI tag in a wheel name
-    import _imp
     so_ext = _imp.extension_suffixes()[0]
     vars['SOABI']= '-'.join(so_ext.split('.')[1].split('-')[:2])
 
@@ -606,9 +621,6 @@ def get_config_vars(*args):
             import _osx_support
             _osx_support.customize_config_vars(_CONFIG_VARS)
 
-        _CONFIG_VARS['INCLUDEPY'] = os.path.join(_CONFIG_VARS['prefix'],
-                                                 'include')
-
     if args:
         vals = []
         for name in args:
@@ -689,7 +701,8 @@ def get_platform():
             machine += ".%s" % bitness[sys.maxsize]
         # fall through to standard osname-release-machine representation
     elif osname[:3] == "aix":
-        return "%s-%s.%s" % (osname, version, release)
+        from _aix_support import aix_platform
+        return aix_platform()
     elif osname[:6] == "cygwin":
         osname = "cygwin"
         import re

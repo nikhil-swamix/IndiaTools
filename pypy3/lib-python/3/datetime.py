@@ -9,7 +9,10 @@ import math as _math
 import sys
 
 # for cpyext, use these as base classes
-from __pypy__._pypydatetime import dateinterop, deltainterop, timeinterop
+try:
+    from __pypy__._pypydatetime import dateinterop, deltainterop, timeinterop
+except ImportError:
+    dateinterop = deltainterop = timeinterop = object
 
 def _cmp(x, y):
     return 0 if x == y else 1 if x > y else -1
@@ -1507,7 +1510,7 @@ class time(timeinterop):
         self._tzinfo = tzinfo
 
     def __reduce_ex__(self, protocol):
-        return (time, self._getstate(protocol))
+        return (self.__class__, self._getstate(protocol))
 
     def __reduce__(self):
         return self.__reduce_ex__(2)

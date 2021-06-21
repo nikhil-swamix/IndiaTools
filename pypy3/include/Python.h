@@ -6,8 +6,6 @@
 #define _GNU_SOURCE 1
 #endif
 #ifndef _WIN32
-# include <inttypes.h>
-# include <stdint.h>
 # include <stddef.h>
 # include <limits.h>
 # include <math.h>
@@ -18,9 +16,6 @@
 # define PyAPI_DATA(RTYPE) extern PyAPI_FUNC(RTYPE)
 # define Py_LOCAL_INLINE(type) static inline type
 #else
-# include <stdint.h>
-# define MS_WIN32 1
-# define MS_WINDOWS 1
 # ifdef _MSC_VER
 #  include <crtdefs.h>
 # endif
@@ -74,7 +69,7 @@
 // #define PyExc_WindowsError PyExc_OSError
 
 #include "patchlevel.h"
-#include "pyconfig.h"
+#include <pyconfig.h>
 
 #include "object.h"
 #include "typeslots.h"
@@ -159,5 +154,7 @@ extern "C" {
 /* PyPy does not implement --with-fpectl */
 #define PyFPE_START_PROTECT(err_string, leave_stmt)
 #define PyFPE_END_PROTECT(v)
+
+#include "pystrtod.h"
 
 #endif

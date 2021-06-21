@@ -238,37 +238,36 @@ class MimeTypes:
         """
 
         # Windows only
-        # if not _winreg:
-        #     return
+        if not _winreg:
+            return
 
-        # def enum_types(mimedb):
-        #     i = 0
-        #     while True:
-        #         try:
-        #             ctype = _winreg.EnumKey(mimedb, i)
-        #             pass
-        #         except OSError:
-        #             break
-        #         else:
-        #             if '\0' not in ctype:
-        #                 yield ctype
-        #         i += 1
+        def enum_types(mimedb):
+            i = 0
+            while True:
+                try:
+                    ctype = _winreg.EnumKey(mimedb, i)
+                except OSError:
+                    break
+                else:
+                    if '\0' not in ctype:
+                        yield ctype
+                i += 1
 
-        # with _winreg.OpenKey(_winreg.HKEY_CLASSES_ROOT, '') as hkcr:
-        #     for subkeyname in enum_types(hkcr):
-        #         try:
-        #             with _winreg.OpenKey(hkcr, subkeyname) as subkey:
-        #                 # Only check file extensions
-        #                 if not subkeyname.startswith("."):
-        #                     continue
-        #                 # raises OSError if no 'Content Type' value
-        #                 mimetype, datatype = _winreg.QueryValueEx(
-        #                     subkey, 'Content Type')
-        #                 if datatype != _winreg.REG_SZ:
-        #                     continue
-        #                 self.add_type(mimetype, subkeyname, strict)
-        #         except OSError:
-        #             continue
+        with _winreg.OpenKey(_winreg.HKEY_CLASSES_ROOT, '') as hkcr:
+            for subkeyname in enum_types(hkcr):
+                try:
+                    with _winreg.OpenKey(hkcr, subkeyname) as subkey:
+                        # Only check file extensions
+                        if not subkeyname.startswith("."):
+                            continue
+                        # raises OSError if no 'Content Type' value
+                        mimetype, datatype = _winreg.QueryValueEx(
+                            subkey, 'Content Type')
+                        if datatype != _winreg.REG_SZ:
+                            continue
+                        self.add_type(mimetype, subkeyname, strict)
+                except OSError:
+                    continue
 
 def guess_type(url, strict=True):
     """Guess the type of a file based on its URL.

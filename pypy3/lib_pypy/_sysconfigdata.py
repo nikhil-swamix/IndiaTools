@@ -5,6 +5,7 @@ from distutils.spawn import find_executable
 
 so_ext = _imp.extension_suffixes()[0]
 
+mybase = os.path.dirname(os.path.dirname(__file__))
 
 build_time_vars = {
     # SOABI is PEP 3149 compliant, but CPython3 has so_ext.split('.')[1]
@@ -25,7 +26,15 @@ build_time_vars = {
     'AR': "ar",
     'ARFLAGS': "rc",
     'EXE': "",
-    'LIBDIR': os.path.join(sys.prefix, 'bin'),
+    # This should point to where the libpypy3-c.so file lives, on CPython
+    # it points to "mybase/lib". But that would require rethinking the PyPy
+    # packaging process which copies pypy3 and libpypy3-c.so to the
+    # "mybase/bin" directory. Only when making a portable build (the default
+    # for the linux buildbots) is there even a "mybase/lib" created, even so
+    # the mybase/bin layout is left untouched.
+    'LIBDIR': os.path.join(mybase, 'bin'),
+    'INCLUDEPY': os.path.join(mybase, 'include'),
+    'LDLIBRARY': 'libpypy3-c.so'
 }
 
 if find_executable("gcc"):
@@ -54,8 +63,8 @@ if sys.platform[:6] == "darwin":
     else:
         # just a guess
         arch = machine
-    build_time_vars['LDSHARED'] += ' -undefined dynamic_lookup'
     build_time_vars['CC'] += ' -arch %s' % (arch,)
+    build_time_vars['LDSHARED'] = build_time_vars['CC'] + ' -shared -undefined dynamic_lookup'
     if "CXX" in build_time_vars:
         build_time_vars['CXX'] += ' -arch %s' % (arch,)
     build_time_vars['MACOSX_DEPLOYMENT_TARGET'] = '10.7'

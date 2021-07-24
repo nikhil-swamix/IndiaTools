@@ -1,6 +1,7 @@
-import os
+import os, time
 import random
 import json
+from pprint import pprint
 
 
 import sys
@@ -10,8 +11,11 @@ if sys.executable.endswith('pypy3.exe'):
 	sys.path.extend(pathlist)
 
 # SET DATABASE ------------------
-def setload(path,seperator='\n'): return set(fread(path).split(seperator))
-def setwrite(path,setDataType): fwrite(path,"\n".join(setDataType))
+def setload(path,seperator='\n'): 
+	rset=set(fread(path).split(seperator));rset.remove('')
+	return rset
+def setwrite(path,setDataType): 
+	fwrite(path,"\n".join(setDataType)+'\n')
 def setupdate(path,newset):
 	diff=newset - setload(path)
 	if diff:
@@ -62,7 +66,7 @@ def now():
 	return int(time.time())
 
 #RANDOMIZERS ---------------------
-def shuffle(L): return [pickrandom(L) for x in range(len(L))]
+def shuffle(L): return [poprandom(L) for x in range(len(L))]
 def randindex(L): return random.randrange(len(L)) # get random index
 def poprandom(L):
 	i = randindex(L) 
@@ -150,13 +154,31 @@ class Parallelizer:
 		return result
 
 #WEBFN______________________________________
+def get_random_proxy():
+	fname='proxylist.set'
+	sourceurl='https://free-proxy-list.net/'
+	cacheTime:'seconds'=30
+
+	if os.path.exists(fname):
+		tdelta=time.time() - os.path.getmtime(fname)
+		if  tdelta>= cacheTime:
+			print(f"LOG:proxy list already exist bro, created {tdelta}s ago ")
+			return setload(fname).pop()
+	else:
+		page=get_page(sourceurl,headers={'User-Agent':useragent})
+		iplist=re.findall(r'[\d]+\.[\d]+\.[\d]+\.[\d]+:[\d]+',page.text)
+		proxylist={'http://'+x for x in iplist}
+		setwrite(fname,proxylist)
+		return proxylist.pop()
 
 def make_session_pool(count=1): return [requests.Session() for x in range(count)]
 
 def get_page(url,headers={}): #return a page req object and retrive text later
 	import requests
-	UserAgent={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0'}
 	# UserAgent={'User-Agent':'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_3 like Mac OS X) AppleWebKit/603.3.8 (KHTML, like Gecko) Mobile/14G60 Instagram 12.0.0.16.90 (iPhone9,4; iOS 10_3_3; en_US; en-US; scale=2.61; gamut=wide; 1080x1920)'}
+
+
+	UserAgent={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0'}
 	headers.update(UserAgent)
 	req=requests.get(url,headers=headers)
 	return req
@@ -244,4 +266,27 @@ if __name__ == '__main__':
 	# url='https://www.teachthought.com/post-sitemap1.xml'	
 	# links=set(x.text for x in get_page_soup(url).select('loc'))
 	# print(links)
-	...,...,...,...,...,...,...,...,...,
+	import urllib.request
+	...
+
+
+	def get_nicehash_avg_payrate(myHashrate,size='10',algorithm='DAGGERHASHIMOTO'):
+		from functools import reduce
+		page=get_page(f'https://api2.nicehash.com/main/api/v2/hashpower/orderBook?size={size}&algorithm={algorithm}')
+		daggerhashimoto_orderbook=page.json()
+		data=daggerhashimoto_orderbook
+		print(data)
+		for region in data['stats']:
+			for j in data['stats'][region]:
+				regionOrderBook=data['stats'][region]['orders']
+				if j == 'marketFactor':
+					myMarketFactorSpeed=float(myHashrate)/float(data['stats'][region]['marketFactor'])
+					# print(f"{myMarketFactorSpeed:.8f}")
+				avgOrderValue=reduce(lambda x,y:x+y,[float(x['price']) for x in regionOrderBook])
+			print("______________________",avgOrderValue/len(regionOrderBook))
+
+	# get_nicehash_avg_payrate(82_000_000)
+	print(get_page('http://localhost:86/'))
+	# page=get_page('https://minerstat.com/hardware/nvidia-rtx-3070')
+	# page=get_page('http://localhost:3333/')
+	

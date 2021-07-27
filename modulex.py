@@ -155,21 +155,27 @@ class Parallelizer:
 
 #WEBFN______________________________________
 def get_random_proxy():
+	import re
 	fname='proxylist.set'
 	sourceurl='https://free-proxy-list.net/'
 	cacheTime:'seconds'=30
 
 	if os.path.exists(fname):
 		tdelta=time.time() - os.path.getmtime(fname)
-		if  tdelta>= cacheTime:
-			print(f"LOG:proxy list already exist bro, created {tdelta}s ago ")
+		if  tdelta>= cacheTime :
+			pass
+		else:
+			print(f"LOG: using preexisting proxyDB: created {tdelta}s ago ")
 			return setload(fname).pop()
-	else:
-		page=get_page(sourceurl,headers={'User-Agent':useragent})
-		iplist=re.findall(r'[\d]+\.[\d]+\.[\d]+\.[\d]+:[\d]+',page.text)
-		proxylist={'http://'+x for x in iplist}
-		setwrite(fname,proxylist)
-		return proxylist.pop()
+
+	page=get_page(sourceurl)
+	iplist=re.findall(r'[\d]+\.[\d]+\.[\d]+\.[\d]+:[\d]+',page.text)
+	proxylist={'http://'+x for x in iplist}
+	setwrite(fname,proxylist)
+	print('LOG: refreshed proxy list')
+	return proxylist.pop()
+
+
 
 def make_session_pool(count=1): return [requests.Session() for x in range(count)]
 
@@ -285,8 +291,14 @@ if __name__ == '__main__':
 				avgOrderValue=reduce(lambda x,y:x+y,[float(x['price']) for x in regionOrderBook])
 			print("______________________",avgOrderValue/len(regionOrderBook))
 
+
+	import requests
+	url='https://testqwerty.requestcatcher.com/'
+	proxies={'https':'https://115.77.191.180:53281'}
+	r=requests.session()
+	result=r.get(url,proxies=proxies)
+	print(result.text)
 	# get_nicehash_avg_payrate(82_000_000)
-	print(get_page('http://localhost:86/'))
 	# page=get_page('https://minerstat.com/hardware/nvidia-rtx-3070')
 	# page=get_page('http://localhost:3333/')
 	

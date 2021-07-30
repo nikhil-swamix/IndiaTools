@@ -1,3 +1,33 @@
+##     ##  #######  ########  ##     ## ##       ######## ##     ## 
+###   ### ##     ## ##     ## ##     ## ##       ##        ##   ##  
+#### #### ##     ## ##     ## ##     ## ##       ##         ## ##   
+## ### ## ##     ## ##     ## ##     ## ##       ######      ###    
+##     ## ##     ## ##     ## ##     ## ##       ##         ## ##   
+##     ## ##     ## ##     ## ##     ## ##       ##        ##   ##  
+##     ##  #######  ########   #######  ######## ######## ##     ##
+# ▀█████████▄  ▄██   ▄                                                                     
+#   ███    ███ ███   ██▄                                                                   
+#   ███    ███ ███▄▄▄███                                                                   
+#_ ▄███▄▄▄██▀  ▀▀▀▀▀▀███                                                                   
+# ▀▀███▀▀▀██▄  ▄██   ███                                                                   
+#   ███    ██▄ ███   ███                                                                   
+#   ███    ███ ███   ███                                                                   
+# ▄█████████▀   ▀█████▀ 
+
+# ███╗   ██╗██╗██╗  ██╗██╗  ██╗██╗██╗     
+# ████╗  ██║██║██║ ██╔╝██║  ██║██║██║     
+# ██╔██╗ ██║██║█████╔╝ ███████║██║██║     
+# ██║╚██╗██║██║██╔═██╗ ██╔══██║██║██║     
+# ██║ ╚████║██║██║  ██╗██║  ██║██║███████╗
+# ╚═╝  ╚═══╝╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚══════╝                                        
+# ███████╗██╗    ██╗ █████╗ ███╗   ███╗██╗
+# ██╔════╝██║    ██║██╔══██╗████╗ ████║██║
+# ███████╗██║ █╗ ██║███████║██╔████╔██║██║
+# ╚════██║██║███╗██║██╔══██║██║╚██╔╝██║██║
+# ███████║╚███╔███╔╝██║  ██║██║ ╚═╝ ██║██║
+# ╚══════╝ ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝
+
+
 import os, time
 import random
 import json
@@ -12,7 +42,8 @@ if sys.executable.endswith('pypy3.exe'):
 
 # SET DATABASE ------------------
 def setload(path,seperator='\n'): 
-	rset=set(fread(path).split(seperator));rset.remove('')
+	rset=set(fread(path).split(seperator));
+	rset.remove('') if '' in rset else ''
 	return rset
 def setwrite(path,setDataType): 
 	fwrite(path,"\n".join(setDataType)+'\n')
@@ -145,13 +176,20 @@ def hash_db(hashkey,*hashvalue,dirname='./LOCAL_DATABASE/'):
 	return jload(itempath)
 
 #THREADING__________________________________
-class Parallelizer:
-	def tpoolmap(fn,*iters,threads=16):
-		from concurrent.futures import ThreadPoolExecutor
-		print(f'__________ThreadPool Made with {threads} threads')
-		POOL=ThreadPoolExecutor(threads)
-		result=POOL.map(fn,*iters)
+maxThreads=128
+def apply_async(*args,):
+
+	global POOL
+	from concurrent.futures import ThreadPoolExecutor
+	try:
+		result=POOL.submit(*args,)
 		return result
+	except:
+		POOL=ThreadPoolExecutor(maxThreads)
+		result=POOL.submit(*args,)
+		return result
+
+	# print(f'__________ThreadPool Made with {threads} threads')
 
 #WEBFN______________________________________
 def get_random_proxy():
@@ -268,6 +306,18 @@ def sync_pypy():
 		pypypathsync=[x for x in sys.path]
 		fwrite('python.paths','\n'.join(pypypathsync))
 
+
+#_________________________________________________
+#                  _                       _      
+#                 (_)                     | |     
+#  _ __ ___   __ _ _ _ __     ___ ___   __| | ___ 
+# | '_ ` _ \ / _` | | '_ \   / __/ _ \ / _` |/ _ \
+# | | | | | | (_| | | | | | | (_| (_) | (_| |  __/
+# |_| |_| |_|\__,_|_|_| |_|  \___\___/ \__,_|\___|
+#_________________________________________________
+
+                                        
+
 if __name__ == '__main__':
 	# url='https://www.teachthought.com/post-sitemap1.xml'	
 	# links=set(x.text for x in get_page_soup(url).select('loc'))
@@ -292,12 +342,6 @@ if __name__ == '__main__':
 			print("______________________",avgOrderValue/len(regionOrderBook))
 
 
-	import requests
-	url='https://testqwerty.requestcatcher.com/'
-	proxies={'https':'https://115.77.191.180:53281'}
-	r=requests.session()
-	result=r.get(url,proxies=proxies)
-	print(result.text)
 	# get_nicehash_avg_payrate(82_000_000)
 	# page=get_page('https://minerstat.com/hardware/nvidia-rtx-3070')
 	# page=get_page('http://localhost:3333/')

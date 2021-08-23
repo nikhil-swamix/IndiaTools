@@ -64,7 +64,9 @@ def attack():
 		killi.acquire()
 		r=increment_filecounter()
 		killi.release()
-		print(r)
+		if r%10==0:
+			print(r)
+			
 
 if __name__ == '__main__':
 	counterpath=os.path.basename(__file__)+'.counter'

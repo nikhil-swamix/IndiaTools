@@ -66,13 +66,13 @@ def attack():
 		killi.release()
 		if r%10==0:
 			print(r)
-			
+
 
 if __name__ == '__main__':
 	counterpath=os.path.basename(__file__)+'.counter'
 	killi=threading.Lock()
 
 
-	tpool=[threading.Thread(target=attack) for r in range(10)]
+	tpool=[threading.Thread(target=attack) for r in range(25)]
 	[x.start() for x in tpool]
 	[x.join() for x in tpool]

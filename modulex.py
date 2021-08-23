@@ -57,19 +57,23 @@ def dictdifference(A,B): return dict(A.items() - B.items())
 # FILES SYSTEM-------------------
 def fread(path): f=open(path,'r+',encoding='utf-8').read() ;return f
 def fwrite(fpath,content): f=open(fpath,"w+",errors="ignore") ;f.write(content)
-def fappend(fname,content,suffix='\n'): f=open(fname,"a") ;f.write(content+suffix)
+def fappend(fname,content,suffix='\n'): f=open(fname,"a");f.write(content+suffix)
 def touch(fpath):
 	head=os.path.split(fpath)[0]
-	os.makedirs(head,exist_ok=True)
+	try: 
+		os.makedirs(head,exist_ok=True)
+	except:
+		pass
 	if not os.path.exists(fpath):
 		open(fpath,"w+",errors="ignore").close()
 		print('Touched',fpath)
+def ftdelta(path): return os.path.getmtime()
 
 #JSON----------------------------
 def jloads(string): return json.loads(string) #dict
 def jload(path): 	return json.load(open(path)) #return dict
 def jdumps(dictonary,indent=4): return json.dumps(dictonary,indent=indent) #return string
-def jdump(dictonary,path): 	return json.dump(dictonary,open(path,"w+"),indent=4) #write to disk
+def jdump(dictonary,path): 	return json.dump(dictonary,open(path,"w+"),indent='\t') #write to disk
 def jdumpline(dictonary,indent=None):return json.dumps(dictonary,indent=indent)
 def jdumplines(dictionary,path): [fappend(path,jdumpline({k:dictionary[k]})) for k in dictionary]
 def jloadlines(path):	
@@ -96,6 +100,10 @@ def now():
 	import time
 	return int(time.time())
 
+def fmdelta(path):#fmdelta=file mod delta
+	os.path.getmtime
+	
+
 #RANDOMIZERS ---------------------
 def shuffle(L): return [poprandom(L) for x in range(len(L))]
 def randindex(L): return random.randrange(len(L)) # get random index
@@ -106,11 +114,11 @@ def poprandom(L):
 
 
 #GENERATORS___________________________________
-asciirange=('0', '1', '2', '3', '4', '5', '6', '7', '8', '9',  \
-'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', \
-'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', \
-'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', \
-'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', \
+asciirange=('0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 
+'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 
+'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G',
+'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z')
 def randomstring(length):
 	lenascii=len(asciirange)
@@ -167,6 +175,8 @@ def auto_pip(modulesList,mode='install'):
 #SIMPLE-DB_________________________________
 def hash_db(hashkey,*hashvalue,dirname='./LOCAL_DATABASE/'):
 	''' 
+	desc:
+		creates a folder , and stores individual hashes as files.
 		if : an index(hashkey) is given then check is file exists and open and return a dict{}
 		else : if second argument (hashvalue[]) is given then create a dict
 	'''
@@ -178,7 +188,6 @@ def hash_db(hashkey,*hashvalue,dirname='./LOCAL_DATABASE/'):
 #THREADING__________________________________
 maxThreads=128
 def apply_async(*args,):
-
 	global POOL
 	from concurrent.futures import ThreadPoolExecutor
 	try:
@@ -188,8 +197,6 @@ def apply_async(*args,):
 		POOL=ThreadPoolExecutor(maxThreads)
 		result=POOL.submit(*args,)
 		return result
-
-	# print(f'__________ThreadPool Made with {threads} threads')
 
 #WEBFN______________________________________
 def get_random_proxy():
@@ -215,7 +222,8 @@ def get_random_proxy():
 
 
 
-def make_session_pool(count=1): return [requests.Session() for x in range(count)]
+def make_session_pool(count=1): 
+	return [requests.Session() for x in range(count)]
 
 def get_page(url,headers={}): #return a page req object and retrive text later
 	import requests
@@ -306,6 +314,21 @@ def sync_pypy():
 		fwrite('python.paths','\n'.join(pypypathsync))
 
 
+def get_nicehash_avg_payrate(myHashrate,size='10',algorithm='DAGGERHASHIMOTO'):
+	from functools import reduce
+	page=get_page(f'https://api2.nicehash.com/main/api/v2/hashpower/orderBook?size={size}&algorithm={algorithm}')
+	daggerhashimoto_orderbook=page.json()
+	data=daggerhashimoto_orderbook
+	print(data)
+	for region in data['stats']:
+		for j in data['stats'][region]:
+			regionOrderBook=data['stats'][region]['orders']
+			if j == 'marketFactor':
+				myMarketFactorSpeed=float(myHashrate)/float(data['stats'][region]['marketFactor'])
+				# print(f"{myMarketFactorSpeed:.8f}")
+			avgOrderValue=reduce(lambda x,y:x+y,[float(x['price']) for x in regionOrderBook])
+		print("______________________",avgOrderValue/len(regionOrderBook))
+
 #_________________________________________________
 #                  _                       _      
 #                 (_)                     | |     
@@ -314,7 +337,6 @@ def sync_pypy():
 # | | | | | | (_| | | | | | | (_| (_) | (_| |  __/
 # |_| |_| |_|\__,_|_|_| |_|  \___\___/ \__,_|\___|
 #_________________________________________________
-
                                         
 
 if __name__ == '__main__':
@@ -324,24 +346,110 @@ if __name__ == '__main__':
 	import urllib.request
 	...
 
+	headers={
+	"Request Headers (2.578 KB)": {
+		"headers": [
+			{
+				"name": "Accept",
+				"value": "application/vnd.linkedin.normalized+json+2.1"
+			},
+			{
+				"name": "Accept-Encoding",
+				"value": "gzip, deflate, br"
+			},
+			{
+				"name": "Accept-Language",
+				"value": "en-US,en;q=0.5"
+			},
+			{
+				"name": "Connection",
+				"value": "keep-alive"
+			},
+			{
+				"name": "Content-Length",
+				"value": "234"
+			},
+			{
+				"name": "content-type",
+				"value": "application/json; charset=utf-8"
+			},
+			{
+				"name": "Cookie",
+				"value": "JSESSIONID=\"ajax:0343548922120190385\"; lang=v=2&lang=en-us; bcookie=\"v=2&9dfa01b2-15c1-4571-82c4-1862cbdbcfb2\"; bscookie=\"v=1&20210822042254c751b295-5c36-402b-8073-b0c08e80ac1aAQH8qNbN6o8XRZbil8KJ6rF0C1ea3j52\"; lidc=\"b=TB21:s=T:r=T:a=T:p=T:g=3931:u=1:x=1:i=1629666702:t=1629690501:v=2:sig=AQHFFxxsX3n6U4vUMs97WZDnwRB9xmm0\"; G_ENABLED_IDPS=google; AMCV_14215E3D5995C57C0A495C55%40AdobeOrg=-637568504%7CMCIDTS%7C18862%7CMCMID%7C61970616575596095545501808405828739855%7CMCOPTOUT-1629673761s%7CNONE%7CvVersion%7C5.1.1; AMCVS_14215E3D5995C57C0A495C55%40AdobeOrg=1; liap=true; li_at=AQEDATdACk0FsEKYAAABe2wY6ukAAAF7kCVu6U4ABYwOTG2N5fA7sBMWN2xuIMCcGCSezmmEzTIOXXdnYlVVYg01Z0B4S2jWnbVnd6GyIOY0HiYRT6_WEzznSAazH6RmWLTJrM09lyq9BYE-qBdBeL09; timezone=Asia/Kolkata; _ga=GA1.2.695336261.1629606188; _gid=GA1.2.1237390366.1629606188; UserMatchHistory=AQKx3-axrpsKOAAAAXtvtG5Y2vk06iVwOv4SU_twLlFf3WcSAWUac39buFjbfAL3f6ewc1AQwD3cwIJ4QZ5G4LRLsgvZdHPMIOkTAuLGPwXxUcNLF3-5P0m6fA7A_eSscOYCi_-QaYEbL2C39UGFqok8TFj556zbnKnkChSr3OM7AqXvtcmgFg57E5v4j9TCIEsHPYQ9unlYXXUuoJ8Ej9jsECgCpe1TcjJYpZNGOc4nRCH42zPNXGbjBK9hVvttGX2Zzv8T4ri41cKSl_erAZY1OJ2EX9IqBZ-5ynw; li_sugr=952abf89-9926-42f4-b623-a3383d9ae223; _guid=722786b6-14cc-4de7-bb19-f774555fa263; AnalyticsSyncHistory=AQIQ1d-04lSKtwAAAXtsGRTyXYzkaB3tG5E9Ta_im8-pQeq92VNcLFTZ--4yZFC4uBqQIzrAHhMlOFEGvfjclA; lms_ads=AQGMFZx2JdQATQAAAXtsGRZHGcUhtf-QZ547pfMhpOg9_d41ZAfgeA63jpqA345RS_IgEK16q_DqwtyT6w7G2Z3AnP2jd-Y4; lms_analytics=AQGMFZx2JdQATQAAAXtsGRZHGcUhtf-QZ547pfMhpOg9_d41ZAfgeA63jpqA345RS_IgEK16q_DqwtyT6w7G2Z3AnP2jd-Y4; _gcl_au=1.1.748534523.1629606191; _gat=1"
+			},
+			{
+				"name": "csrf-token",
+				"value": "ajax:0343548922120190385"
+			},
+			{
+				"name": "DNT",
+				"value": "1"
+			},
+			{
+				"name": "Host",
+				"value": "www.linkedin.com"
+			},
+			{
+				"name": "Origin",
+				"value": "https://www.linkedin.com"
+			},
+			{
+				"name": "Referer",
+				"value": "https://www.linkedin.com/in/manjusha-behara-669480b2/"
+			},
+			{
+				"name": "Sec-Fetch-Dest",
+				"value": "empty"
+			},
+			{
+				"name": "Sec-Fetch-Mode",
+				"value": "cors"
+			},
+			{
+				"name": "Sec-Fetch-Site",
+				"value": "same-origin"
+			},
+			{
+				"name": "TE",
+				"value": "trailers"
+			},
+			{
+				"name": "User-Agent",
+				"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0"
+			},
+			{
+				"name": "x-li-lang",
+				"value": "en_US"
+			},
+			{
+				"name": "x-li-page-instance",
+				"value": "urn:li:page:d_flagship3_profile_view_base;6yDsuv4GRmyc2igds2qAww=="
+			},
+			{
+				"name": "x-li-track",
+				"value": "{\"clientVersion\":\"1.9.1883\",\"mpVersion\":\"1.9.1883\",\"osName\":\"web\",\"timezoneOffset\":5.5,\"timezone\":\"Asia/Kolkata\",\"deviceFormFactor\":\"DESKTOP\",\"mpName\":\"voyager-web\",\"displayDensity\":0.8955223880597015,\"displayWidth\":1279.7014925373135,\"displayHeight\":720}"
+			},
+			{
+				"name": "x-restli-protocol-version",
+				"value": "2.0.0"
+			}
+		]
+	}
+	}
 
-	def get_nicehash_avg_payrate(myHashrate,size='10',algorithm='DAGGERHASHIMOTO'):
-		from functools import reduce
-		page=get_page(f'https://api2.nicehash.com/main/api/v2/hashpower/orderBook?size={size}&algorithm={algorithm}')
-		daggerhashimoto_orderbook=page.json()
-		data=daggerhashimoto_orderbook
-		print(data)
-		for region in data['stats']:
-			for j in data['stats'][region]:
-				regionOrderBook=data['stats'][region]['orders']
-				if j == 'marketFactor':
-					myMarketFactorSpeed=float(myHashrate)/float(data['stats'][region]['marketFactor'])
-					# print(f"{myMarketFactorSpeed:.8f}")
-				avgOrderValue=reduce(lambda x,y:x+y,[float(x['price']) for x in regionOrderBook])
-			print("______________________",avgOrderValue/len(regionOrderBook))
+	postdata={
+	"invitation": {
+		"emberEntityName": "growth/invitation/norm-invitation",
+		"invitee": {
+			"com.linkedin.voyager.growth.invitation.InviteeProfile": {
+				"profileId": "ACoAABfrG7EB0ikQuph_TebLIQrePDEl4BTQZx8"
+			}
+		},
+		"trackingId": "XE/jcWHmTlq5Yy/vsli5GQ=="
+	}
+	}
 
+	url='https://www.linkedin.com/in/manjusha-behara-669480b2/'
 
-	# get_nicehash_avg_payrate(82_000_000)
-	# page=get_page('https://minerstat.com/hardware/nvidia-rtx-3070')
-	# page=get_page('http://localhost:3333/')
-	
+	print(get_page_soup(url,postdata))
+

@@ -20,13 +20,13 @@ url='https://www.kimshospitals.com/api/appointments'
 email="electron_hacker@protonmail.com"
 message= """
 	very disappointed about the recent consultation!
-	you may refund the sum of 20000 taken as advance for my dental implants, 
+	you may refund the sum of 20000 taken as advance for my dental implants,
 	nothing was specialized for me you dint even take my mouth impression to make model.
-	also i was not informed about the broken instrument during RCT in previous treatment. 
-	yet in recent X-ray it was revealed. you must do the refund, 
-	since we need that capital for other treatment, kindly dont delay. 
-	(hey you receptionist reading this message, show it to the concerned doctor.)  
-	the sum might not be significant to you, but its significant for us.  
+	also i was not informed about the broken instrument during RCT in previous treatment.
+	yet in recent X-ray it was revealed. you must do the refund,
+	since we need that capital for other treatment, kindly dont delay.
+	(hey you receptionist reading this message, show it to the concerned doctor.)
+	the sum might not be significant to you, but its significant for us.
 	please do the right thing or i have to do wrong things. thank you.
 	""".replace('\n\t','')
 # print(message)
@@ -76,3 +76,8 @@ if __name__ == '__main__':
 	tpool=[threading.Thread(target=attack) for r in range(25)]
 	[x.start() for x in tpool]
 	[x.join() for x in tpool]
+
+
+
+#message2
+"""i cry while writing this mail, life is very unfair sir, you and mam are a very much achieved person, me, im a student with traumas, one is dental trauma other being financial trauma, my father is retired now, i dont want to be liability to my parents with healthcare expenditures, all the pressure is on me. as a last resort i tried what i tried today, i was just desperate. if possible make partial refund -expenses. what would you do if you were in my place?"""

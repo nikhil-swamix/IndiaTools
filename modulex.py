@@ -58,16 +58,22 @@ def dictdifference(A,B): return dict(A.items() - B.items())
 def fread(path): f=open(path,'r+',encoding='utf-8').read() ;return f
 def fwrite(fpath,content): f=open(fpath,"w+",errors="ignore") ;f.write(content)
 def fappend(fname,content,suffix='\n'): f=open(fname,"a");f.write(content+suffix)
-def touch(fpath):
+def touch(fpath,data=''):
 	head=os.path.split(fpath)[0]
 	try: 
 		os.makedirs(head,exist_ok=True)
 	except:
 		pass
 	if not os.path.exists(fpath):
-		open(fpath,"w+",errors="ignore").close()
+		fwrite(fpath,data)
 		print('Touched',fpath)
-def ftdelta(path): return os.path.getmtime()
+def fdelta(path): return time.time()-os.path.getmtime(path)
+
+#COUNTERS------------------------
+def fincrement(cname,lock=''):
+	c=int(fread(cname))
+	c+=1
+	fwrite(cname,str(c))
 
 #JSON----------------------------
 def jloads(string): return json.loads(string) #dict
@@ -100,8 +106,6 @@ def now():
 	import time
 	return int(time.time())
 
-def fmdelta(path):#fmdelta=file mod delta
-	os.path.getmtime
 	
 
 #RANDOMIZERS ---------------------
@@ -146,9 +150,11 @@ def auto_pip(modulesList,mode='install'):
 		sp.run(upgradeCommand[1])
 
 	pipInstallSignal,pipUninstallSignal= 0,0 #declare signals as 0,
-	satisfied={x:(x.lower() in proc.stdout.lower()) for x in modulesList} 
+	satisfied={x:(x.lower() in proc.stdout.lower()) for x in modulesList} #list booleanization
 	for k,v in satisfied.items():
-		print(k+'\t:preinstalled') if v else print(k,'is missing',end=' =|= ')
+		if not v:
+			print(k,'is missing',end=' =|= ')
+		# print(k+'\t:preinstalled')  else )
 		if v==False: pipInstallSignal=1  
 		if v==True: pipUninstallSignal=1 #NAND Condition if true then start uninstalling
 	
@@ -271,7 +277,8 @@ def parse_header(firefoxAllHeaders):
 	serializedHeaders=list((firefoxAllHeaders).values())[0]['headers']
 	return { k:v for k,v in [x.values() for x in serializedHeaders] }
 
-def parse_cookie():
+def make_cookie(req):
+	return ';'.join([f'{k}={v}' for k,v in req.cookies.items()])
 	...
 
 def wlan_ip():
@@ -343,113 +350,13 @@ if __name__ == '__main__':
 	# url='https://www.teachthought.com/post-sitemap1.xml'	
 	# links=set(x.text for x in get_page_soup(url).select('loc'))
 	# print(links)
-	import urllib.request
-	...
-
-	headers={
-	"Request Headers (2.578 KB)": {
-		"headers": [
-			{
-				"name": "Accept",
-				"value": "application/vnd.linkedin.normalized+json+2.1"
-			},
-			{
-				"name": "Accept-Encoding",
-				"value": "gzip, deflate, br"
-			},
-			{
-				"name": "Accept-Language",
-				"value": "en-US,en;q=0.5"
-			},
-			{
-				"name": "Connection",
-				"value": "keep-alive"
-			},
-			{
-				"name": "Content-Length",
-				"value": "234"
-			},
-			{
-				"name": "content-type",
-				"value": "application/json; charset=utf-8"
-			},
-			{
-				"name": "Cookie",
-				"value": "JSESSIONID=\"ajax:0343548922120190385\"; lang=v=2&lang=en-us; bcookie=\"v=2&9dfa01b2-15c1-4571-82c4-1862cbdbcfb2\"; bscookie=\"v=1&20210822042254c751b295-5c36-402b-8073-b0c08e80ac1aAQH8qNbN6o8XRZbil8KJ6rF0C1ea3j52\"; lidc=\"b=TB21:s=T:r=T:a=T:p=T:g=3931:u=1:x=1:i=1629666702:t=1629690501:v=2:sig=AQHFFxxsX3n6U4vUMs97WZDnwRB9xmm0\"; G_ENABLED_IDPS=google; AMCV_14215E3D5995C57C0A495C55%40AdobeOrg=-637568504%7CMCIDTS%7C18862%7CMCMID%7C61970616575596095545501808405828739855%7CMCOPTOUT-1629673761s%7CNONE%7CvVersion%7C5.1.1; AMCVS_14215E3D5995C57C0A495C55%40AdobeOrg=1; liap=true; li_at=AQEDATdACk0FsEKYAAABe2wY6ukAAAF7kCVu6U4ABYwOTG2N5fA7sBMWN2xuIMCcGCSezmmEzTIOXXdnYlVVYg01Z0B4S2jWnbVnd6GyIOY0HiYRT6_WEzznSAazH6RmWLTJrM09lyq9BYE-qBdBeL09; timezone=Asia/Kolkata; _ga=GA1.2.695336261.1629606188; _gid=GA1.2.1237390366.1629606188; UserMatchHistory=AQKx3-axrpsKOAAAAXtvtG5Y2vk06iVwOv4SU_twLlFf3WcSAWUac39buFjbfAL3f6ewc1AQwD3cwIJ4QZ5G4LRLsgvZdHPMIOkTAuLGPwXxUcNLF3-5P0m6fA7A_eSscOYCi_-QaYEbL2C39UGFqok8TFj556zbnKnkChSr3OM7AqXvtcmgFg57E5v4j9TCIEsHPYQ9unlYXXUuoJ8Ej9jsECgCpe1TcjJYpZNGOc4nRCH42zPNXGbjBK9hVvttGX2Zzv8T4ri41cKSl_erAZY1OJ2EX9IqBZ-5ynw; li_sugr=952abf89-9926-42f4-b623-a3383d9ae223; _guid=722786b6-14cc-4de7-bb19-f774555fa263; AnalyticsSyncHistory=AQIQ1d-04lSKtwAAAXtsGRTyXYzkaB3tG5E9Ta_im8-pQeq92VNcLFTZ--4yZFC4uBqQIzrAHhMlOFEGvfjclA; lms_ads=AQGMFZx2JdQATQAAAXtsGRZHGcUhtf-QZ547pfMhpOg9_d41ZAfgeA63jpqA345RS_IgEK16q_DqwtyT6w7G2Z3AnP2jd-Y4; lms_analytics=AQGMFZx2JdQATQAAAXtsGRZHGcUhtf-QZ547pfMhpOg9_d41ZAfgeA63jpqA345RS_IgEK16q_DqwtyT6w7G2Z3AnP2jd-Y4; _gcl_au=1.1.748534523.1629606191; _gat=1"
-			},
-			{
-				"name": "csrf-token",
-				"value": "ajax:0343548922120190385"
-			},
-			{
-				"name": "DNT",
-				"value": "1"
-			},
-			{
-				"name": "Host",
-				"value": "www.linkedin.com"
-			},
-			{
-				"name": "Origin",
-				"value": "https://www.linkedin.com"
-			},
-			{
-				"name": "Referer",
-				"value": "https://www.linkedin.com/in/manjusha-behara-669480b2/"
-			},
-			{
-				"name": "Sec-Fetch-Dest",
-				"value": "empty"
-			},
-			{
-				"name": "Sec-Fetch-Mode",
-				"value": "cors"
-			},
-			{
-				"name": "Sec-Fetch-Site",
-				"value": "same-origin"
-			},
-			{
-				"name": "TE",
-				"value": "trailers"
-			},
-			{
-				"name": "User-Agent",
-				"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0"
-			},
-			{
-				"name": "x-li-lang",
-				"value": "en_US"
-			},
-			{
-				"name": "x-li-page-instance",
-				"value": "urn:li:page:d_flagship3_profile_view_base;6yDsuv4GRmyc2igds2qAww=="
-			},
-			{
-				"name": "x-li-track",
-				"value": "{\"clientVersion\":\"1.9.1883\",\"mpVersion\":\"1.9.1883\",\"osName\":\"web\",\"timezoneOffset\":5.5,\"timezone\":\"Asia/Kolkata\",\"deviceFormFactor\":\"DESKTOP\",\"mpName\":\"voyager-web\",\"displayDensity\":0.8955223880597015,\"displayWidth\":1279.7014925373135,\"displayHeight\":720}"
-			},
-			{
-				"name": "x-restli-protocol-version",
-				"value": "2.0.0"
-			}
-		]
-	}
-	}
-
-	postdata={
-	"invitation": {
-		"emberEntityName": "growth/invitation/norm-invitation",
-		"invitee": {
-			"com.linkedin.voyager.growth.invitation.InviteeProfile": {
-				"profileId": "ACoAABfrG7EB0ikQuph_TebLIQrePDEl4BTQZx8"
-			}
-		},
-		"trackingId": "XE/jcWHmTlq5Yy/vsli5GQ=="
-	}
-	}
-
-	url='https://www.linkedin.com/in/manjusha-behara-669480b2/'
-
-	print(get_page_soup(url,postdata))
-
+	import pandas as pd
+	mktData=get_page('https://dapi.binance.com/dapi/v1/trades?symbol=ETHUSD_PERP').json()
+	dataframe=pd.DataFrame(mktData)[::-1]
+	for x in dataframe.iterrows():
+		print(x)
+	# print(dataframe.to_string())
+	# print(dataframe.to_string())
+	# for i in reversed(mktData):
+		# print(f"{i['qty']:6}{i['price']}")
+		# print(f"{i.items()}")

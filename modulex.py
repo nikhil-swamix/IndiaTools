@@ -59,11 +59,8 @@ def fread(path): f=open(path,'r+',encoding='utf-8').read() ;return f
 def fwrite(fpath,content): f=open(fpath,"w+",errors="ignore") ;f.write(content)
 def fappend(fname,content,suffix='\n'): f=open(fname,"a");f.write(content+suffix)
 def touch(fpath,data=''):
-	head=os.path.split(fpath)[0]
-	try: 
-		os.makedirs(head,exist_ok=True)
-	except:
-		pass
+	try: os.makedirs(os.path.split(fpath)[0],exist_ok=True)
+	except: pass
 	if not os.path.exists(fpath):
 		fwrite(fpath,data)
 		print('Touched',fpath)
@@ -71,9 +68,7 @@ def fdelta(path): return time.time()-os.path.getmtime(path)
 
 #COUNTERS------------------------
 def fincrement(cname,lock=''):
-	c=int(fread(cname))
-	c+=1
-	fwrite(cname,str(c))
+	c=int(fread(cname)); c+=1; fwrite(cname,str(c))
 
 #JSON----------------------------
 def jloads(string): return json.loads(string) #dict
@@ -231,14 +226,21 @@ def get_random_proxy():
 def make_session_pool(count=1): 
 	return [requests.Session() for x in range(count)]
 
+UserAgent={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0'}
 def get_page(url,headers={}): #return a page req object and retrive text later
 	import requests
-	# UserAgent={'User-Agent':'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_3 like Mac OS X) AppleWebKit/603.3.8 (KHTML, like Gecko) Mobile/14G60 Instagram 12.0.0.16.90 (iPhone9,4; iOS 10_3_3; en_US; en-US; scale=2.61; gamut=wide; 1080x1920)'}
-
-	UserAgent={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0'}
 	headers.update(UserAgent)
 	req=requests.get(url,headers=headers)
 	return req
+
+def post_page(url,data,headers={},):
+	import requests
+	r= requests.post(url,json=data,headers=headers)
+	if not r:
+		r= requests.post(url,data=data,headers=headers)
+
+	return 
+
 
 def make_soup(markup): 
 	from bs4 import BeautifulSoup as soup
@@ -251,7 +253,7 @@ def make_soup(markup):
 def get_page_soup(url,headers={}): 
 	return make_soup(get_page(url,headers=headers).text)
 
-def make_selenium_driver(headless=True,strategy='normal',timeout=5):
+def make_selenium_driver(headless=False,strategy='eager',timeout=10):
 	from selenium import webdriver as wd
 	opts = wd.firefox.options.Options();
 	opts.page_load_strategy = strategy
@@ -263,18 +265,26 @@ def make_selenium_driver(headless=True,strategy='normal',timeout=5):
 	driver.implicitly_wait(10)	
 	return driver 
 
-def get_page_selenium(driver,url,new_tab=0):
+def get_page_selenium(driver,url,new_tab=0,delay=2,waitcondition=lambda:True,waitcondition_polling=0.2,waitcondition_retries=10):
 	try:
 		if new_tab:
 			driver.execute_script("window.open('{}', '_blank')".format(url))
-
 		driver.get(url)
+
+		while waitcondition()==False:
+			if retry>=waitcondition_retries:
+				break
+			time.sleep(waitcondition_polling)
+
 		return driver.page_source
 	except Exception as e:	
-		print((e))
+		print(repr(e))
 
-def parse_header(firefoxAllHeaders):
-	serializedHeaders=list((firefoxAllHeaders).values())[0]['headers']
+def parse_header(*firefoxAllHeaders,file=''):
+	if firefoxAllHeaders: rawheader=firefoxAllHeaders[0] 
+	if file: rawheader=jload(file)
+	serializedHeaders=list((rawheader).values())[0]['headers']
+	# print(serializedHeaders)
 	return { k:v for k,v in [x.values() for x in serializedHeaders] }
 
 def make_cookie(req):
@@ -344,19 +354,52 @@ def get_nicehash_avg_payrate(myHashrate,size='10',algorithm='DAGGERHASHIMOTO'):
 # | | | | | | (_| | | | | | | (_| (_) | (_| |  __/
 # |_| |_| |_|\__,_|_|_| |_|  \___\___/ \__,_|\___|
 #_________________________________________________
-                                        
 
-if __name__ == '__main__':
-	# url='https://www.teachthought.com/post-sitemap1.xml'	
-	# links=set(x.text for x in get_page_soup(url).select('loc'))
-	# print(links)
-	import pandas as pd
-	mktData=get_page('https://dapi.binance.com/dapi/v1/trades?symbol=ETHUSD_PERP').json()
-	dataframe=pd.DataFrame(mktData)[::-1]
-	for x in dataframe.iterrows():
-		print(x)
+# def binance_recent_trades():                                        
+	# import pandas as pd
+	# mktData=get_page('https://dapi.binance.com/dapi/v1/trades?symbol=ETHUSD_PERP').json()
+	# dataframe=pd.DataFrame(mktData)[::-1]
+	# for x in dataframe.iterrows():
+	# 	print(x)
+
+	# print(page.text)
 	# print(dataframe.to_string())
 	# print(dataframe.to_string())
 	# for i in reversed(mktData):
 		# print(f"{i['qty']:6}{i['price']}")
 		# print(f"{i.items()}")
+
+def google_enterprise_get_users_info(query):
+	url=f'https://people-pa.clients6.google.com/v2/people/autocomplete?query={query}&client=GMAIL_WEB_DOMAIN&clientVersion.clientAgent=CONTACT_STORE&clientVersion.clientType=GMAIL_WEB_DOMAIN&clientVersion.clientVersion=contact_store_336195648&pageSize=300&key=AIzaSyBuUpn1wi2-0JpM3S-tq2csYx0z2_m_pqc&%24unique=gc606'
+	page=requests.get(url,headers=parse_header(file='headers.json'))
+	fwrite('response.txt',page.text)
+
+if __name__ == '__main__':
+	def has_page_changed(currentpage):
+		global seleneum_lastpage
+		try:
+			if seleneum_lastpage:
+				pass
+		except:
+			pass
+# 90279d8e709cc88b2b918da5648c242055d4cab33e19bfe4583a00a9aeb9ace7
+	# driver=make_selenium_driver()
+	# url='https://medium.com/the-virago/are-men-biologically-hardwired-to-chase-after-much-younger-girls-66d4d428ee56'
+	import requests,json
+	url='https://www.quora.com/graphql/gql_para_POST?q=UserProfilePostsList_Posts_Query'
+	postdata={"extensions": {"hash": "90279d8e709cc88b2b918da5648c242055d4cab33e19bfe4583a00a9aeb9ace7"}, "queryName": "UserProfilePostsList_Posts_Query", "variables": {"after": "17", "first": 3, "order": "most_recent", "uid": 1359639221 } }
+	headers=UserAgent
+	headers.update(parse_header(file='headers.json'))
+	[print(h,':',v) for h,v in headers.items()]
+
+	p=post_page(url,data=json.dumps(postdata),headers=headers)
+
+	print(p,p.content)
+	# r=get_page_selenium(driver,url,has_page_changed)
+	# driver.close()
+
+
+
+
+
+# html body div#root div.a.b.c div.s article.meteredContent div section.de.df.dg.dh.di

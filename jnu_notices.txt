@@ -1,0 +1,1526 @@
+{
+  "results": [
+    {
+      "suggestion": "notice@jnu.ac.in",
+      "objectType": "PERSON",
+      "person": {
+        "personId": "113401989629627202390",
+        "metadata": {
+          "ownerId": "113401989629627202390",
+          "objectType": "PERSON",
+          "inViewerDomain": true,
+          "lastUpdateTimeMicros": "1629002070564775",
+          "affinity": [
+            {
+              "loggingId": "KgPwZcQ="
+            }
+          ],
+          "identityInfo": {
+            "sourceIds": [
+              {
+                "container": "PROFILE",
+                "id": "113401989629627202390",
+                "containerType": "PROFILE"
+              }
+            ]
+          }
+        },
+        "name": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "113401989629627202390",
+              "containerType": "PROFILE"
+            },
+            "displayName": "JNU Notification",
+            "formattedName": "JNU Notification",
+            "givenName": "JNU",
+            "familyName": "Notification",
+            "unstructuredName": "JNU Notification"
+          }
+        ],
+        "photo": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "113401989629627202390",
+              "containerType": "PROFILE"
+            },
+            "url": "https://lh3.googleusercontent.com/a-/AOh14GhUhqBED2Pb__mew8FdtTcKNSKKWpCeIfeenCCrg-EEsKPzxZg9N-qWMr5-_AkP",
+            "isDefault": true,
+            "photoToken": "EhUxMTM0MDE5ODk2Mjk2MjcyMDIzOTAoATDK0O7e-_____8B",
+            "isMonogram": true,
+            "monogramBackground": "512DA8"
+          }
+        ],
+        "email": [
+          {
+            "metadata": {
+              "container": "DOMAIN_PROFILE",
+              "primary": true,
+              "verified": true,
+              "encodedContainerId": "113401989629627202390",
+              "containerType": "DOMAIN_PROFILE"
+            },
+            "value": "notice@jnu.ac.in",
+            "extendedData": {
+              "smtpServerSupportsTls": true
+            }
+          }
+        ],
+        "readOnlyProfileInfo": [
+          {
+            "ownerId": "113401989629627202390",
+            "inViewerDomain": true
+          }
+        ]
+      }
+    },
+    {
+      "suggestion": "notice_saa@jnu.ac.in",
+      "objectType": "PERSON",
+      "person": {
+        "personId": "105935715251194404356",
+        "metadata": {
+          "ownerId": "105935715251194404356",
+          "objectType": "PERSON",
+          "inViewerDomain": true,
+          "lastUpdateTimeMicros": "1628967296368016",
+          "affinity": [
+            {
+              "loggingId": "KgPwZcQ="
+            }
+          ],
+          "identityInfo": {
+            "sourceIds": [
+              {
+                "container": "PROFILE",
+                "id": "105935715251194404356",
+                "containerType": "PROFILE"
+              }
+            ]
+          }
+        },
+        "name": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "105935715251194404356",
+              "containerType": "PROFILE"
+            },
+            "displayName": "Art School",
+            "formattedName": "Art School",
+            "givenName": "Art",
+            "familyName": "School",
+            "unstructuredName": "Art School"
+          }
+        ],
+        "photo": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "105935715251194404356",
+              "containerType": "PROFILE"
+            },
+            "url": "https://lh3.googleusercontent.com/a-/AOh14GgQlL_fmZ6nnYQ_mSX2QL0xsZhT01W4mLYmvcIITd81MTDF10hrfGef5SiA7KTK",
+            "isDefault": true,
+            "photoToken": "EhUxMDU5MzU3MTUyNTExOTQ0MDQzNTYoATC9hoSaAw==",
+            "isMonogram": true,
+            "monogramBackground": "5D4037"
+          }
+        ],
+        "email": [
+          {
+            "metadata": {
+              "container": "DOMAIN_PROFILE",
+              "primary": true,
+              "verified": true,
+              "encodedContainerId": "105935715251194404356",
+              "containerType": "DOMAIN_PROFILE"
+            },
+            "value": "notice_saa@jnu.ac.in",
+            "extendedData": {
+              "smtpServerSupportsTls": true
+            }
+          }
+        ],
+        "readOnlyProfileInfo": [
+          {
+            "ownerId": "105935715251194404356",
+            "inViewerDomain": true
+          }
+        ]
+      }
+    },
+    {
+      "suggestion": "notice_sbt@jnu.ac.in",
+      "objectType": "PERSON",
+      "person": {
+        "personId": "105606704292362427931",
+        "metadata": {
+          "ownerId": "105606704292362427931",
+          "objectType": "PERSON",
+          "inViewerDomain": true,
+          "lastUpdateTimeMicros": "1628973421194098",
+          "affinity": [
+            {
+              "loggingId": "KgPwZcQ="
+            }
+          ],
+          "identityInfo": {
+            "sourceIds": [
+              {
+                "container": "PROFILE",
+                "id": "105606704292362427931",
+                "containerType": "PROFILE"
+              }
+            ]
+          }
+        },
+        "name": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "105606704292362427931",
+              "containerType": "PROFILE"
+            },
+            "displayName": "Biotechnology School",
+            "formattedName": "Biotechnology School",
+            "givenName": "Biotechnology",
+            "familyName": "School",
+            "unstructuredName": "Biotechnology School"
+          }
+        ],
+        "photo": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "105606704292362427931",
+              "containerType": "PROFILE"
+            },
+            "url": "https://lh3.googleusercontent.com/a-/AOh14GhANElRnrpHSxcF1OuANIV85obJ1Qwwo4Wx_YwZylQK3K30Aw5SScnM0BlHsBNk",
+            "isDefault": true,
+            "photoToken": "EhUxMDU2MDY3MDQyOTIzNjI0Mjc5MzEoATDu0c68-P____8B",
+            "isMonogram": true,
+            "monogramBackground": "EC407A"
+          }
+        ],
+        "email": [
+          {
+            "metadata": {
+              "container": "DOMAIN_PROFILE",
+              "primary": true,
+              "verified": true,
+              "encodedContainerId": "105606704292362427931",
+              "containerType": "DOMAIN_PROFILE"
+            },
+            "value": "notice_sbt@jnu.ac.in",
+            "extendedData": {
+              "smtpServerSupportsTls": true
+            }
+          }
+        ],
+        "readOnlyProfileInfo": [
+          {
+            "ownerId": "105606704292362427931",
+            "inViewerDomain": true
+          }
+        ]
+      }
+    },
+    {
+      "suggestion": "notice_cl@jnu.ac.in",
+      "objectType": "PERSON",
+      "person": {
+        "personId": "100790933424029148390",
+        "metadata": {
+          "ownerId": "100790933424029148390",
+          "objectType": "PERSON",
+          "inViewerDomain": true,
+          "lastUpdateTimeMicros": "1628820581962487",
+          "affinity": [
+            {
+              "loggingId": "KgPwZcQ="
+            }
+          ],
+          "identityInfo": {
+            "sourceIds": [
+              {
+                "container": "PROFILE",
+                "id": "100790933424029148390",
+                "containerType": "PROFILE"
+              }
+            ]
+          }
+        },
+        "name": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "100790933424029148390",
+              "containerType": "PROFILE"
+            },
+            "displayName": "Clearance Jnu",
+            "formattedName": "Clearance Jnu",
+            "givenName": "Clearance",
+            "familyName": "Jnu",
+            "unstructuredName": "Clearance Jnu"
+          }
+        ],
+        "photo": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "100790933424029148390",
+              "containerType": "PROFILE"
+            },
+            "url": "https://lh3.googleusercontent.com/a-/AOh14Gj9j09uoEj913tg_qtIEUU5umXn-c0kgyYpZPBuQYLMU8Y0ZUp-6qz28VqGbgY9",
+            "isDefault": true,
+            "photoToken": "EhUxMDA3OTA5MzM0MjQwMjkxNDgzOTAoATCM096PAQ==",
+            "isMonogram": true,
+            "monogramBackground": "004D40"
+          }
+        ],
+        "email": [
+          {
+            "metadata": {
+              "container": "DOMAIN_PROFILE",
+              "primary": true,
+              "verified": true,
+              "encodedContainerId": "100790933424029148390",
+              "containerType": "DOMAIN_PROFILE"
+            },
+            "value": "notice_cl@jnu.ac.in",
+            "extendedData": {
+              "smtpServerSupportsTls": true
+            }
+          }
+        ],
+        "readOnlyProfileInfo": [
+          {
+            "ownerId": "100790933424029148390",
+            "inViewerDomain": true
+          }
+        ]
+      }
+    },
+    {
+      "suggestion": "notice_scss@jnu.ac.in",
+      "objectType": "PERSON",
+      "person": {
+        "personId": "110017637230674235919",
+        "metadata": {
+          "ownerId": "110017637230674235919",
+          "objectType": "PERSON",
+          "inViewerDomain": true,
+          "lastUpdateTimeMicros": "1628829683555357",
+          "affinity": [
+            {
+              "loggingId": "KgPwZcQ="
+            }
+          ],
+          "identityInfo": {
+            "sourceIds": [
+              {
+                "container": "PROFILE",
+                "id": "110017637230674235919",
+                "containerType": "PROFILE"
+              }
+            ]
+          }
+        },
+        "name": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "110017637230674235919",
+              "containerType": "PROFILE"
+            },
+            "displayName": "Computer School",
+            "formattedName": "Computer School",
+            "givenName": "Computer",
+            "familyName": "School",
+            "unstructuredName": "Computer School"
+          }
+        ],
+        "photo": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "110017637230674235919",
+              "containerType": "PROFILE"
+            },
+            "url": "https://lh3.googleusercontent.com/a-/AOh14Gj9OnsOCpI-4-g4ShBolUR3rcBDtBMxmf3WfVSk0A9jB5PKPy5XLl5mG7QybU2h",
+            "isDefault": true,
+            "photoToken": "EhUxMTAwMTc2MzcyMzA2NzQyMzU5MTkoATCirt6H-P____8B",
+            "isMonogram": true,
+            "monogramBackground": "EF6C00"
+          }
+        ],
+        "email": [
+          {
+            "metadata": {
+              "container": "DOMAIN_PROFILE",
+              "primary": true,
+              "verified": true,
+              "encodedContainerId": "110017637230674235919",
+              "containerType": "DOMAIN_PROFILE"
+            },
+            "value": "notice_scss@jnu.ac.in",
+            "extendedData": {
+              "smtpServerSupportsTls": true
+            }
+          }
+        ],
+        "readOnlyProfileInfo": [
+          {
+            "ownerId": "110017637230674235919",
+            "inViewerDomain": true
+          }
+        ]
+      }
+    },
+    {
+      "suggestion": "notice_scdr@jnu.ac.in",
+      "objectType": "PERSON",
+      "person": {
+        "personId": "117714239872423816116",
+        "metadata": {
+          "ownerId": "117714239872423816116",
+          "objectType": "PERSON",
+          "inViewerDomain": true,
+          "lastUpdateTimeMicros": "1628969405882468",
+          "affinity": [
+            {
+              "loggingId": "KgPwZcQ="
+            }
+          ],
+          "identityInfo": {
+            "sourceIds": [
+              {
+                "container": "PROFILE",
+                "id": "117714239872423816116",
+                "containerType": "PROFILE"
+              }
+            ]
+          }
+        },
+        "name": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "117714239872423816116",
+              "containerType": "PROFILE"
+            },
+            "displayName": "Disaster Research",
+            "formattedName": "Disaster Research",
+            "givenName": "Disaster",
+            "familyName": "Research",
+            "unstructuredName": "Disaster Research"
+          }
+        ],
+        "photo": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "117714239872423816116",
+              "containerType": "PROFILE"
+            },
+            "url": "https://lh3.googleusercontent.com/a-/AOh14GjJnV-nw4RmV-LbEJdNuQeqvuStXy3fClhjF81GlWNgoPj7on__hXU05lmnb1KP",
+            "isDefault": true,
+            "photoToken": "EhUxMTc3MTQyMzk4NzI0MjM4MTYxMTYoATDJoaDV-_____8B",
+            "isMonogram": true,
+            "monogramBackground": "0288D1"
+          }
+        ],
+        "email": [
+          {
+            "metadata": {
+              "container": "DOMAIN_PROFILE",
+              "primary": true,
+              "verified": true,
+              "encodedContainerId": "117714239872423816116",
+              "containerType": "DOMAIN_PROFILE"
+            },
+            "value": "notice_scdr@jnu.ac.in",
+            "extendedData": {
+              "smtpServerSupportsTls": true
+            }
+          }
+        ],
+        "readOnlyProfileInfo": [
+          {
+            "ownerId": "117714239872423816116",
+            "inViewerDomain": true
+          }
+        ]
+      }
+    },
+    {
+      "suggestion": "notice_soe@jnu.ac.in",
+      "objectType": "PERSON",
+      "person": {
+        "personId": "104216275657595076073",
+        "metadata": {
+          "ownerId": "104216275657595076073",
+          "objectType": "PERSON",
+          "inViewerDomain": true,
+          "lastUpdateTimeMicros": "1628973260041658",
+          "affinity": [
+            {
+              "loggingId": "KgPwZcQ="
+            }
+          ],
+          "identityInfo": {
+            "sourceIds": [
+              {
+                "container": "PROFILE",
+                "id": "104216275657595076073",
+                "containerType": "PROFILE"
+              }
+            ]
+          }
+        },
+        "name": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "104216275657595076073",
+              "containerType": "PROFILE"
+            },
+            "displayName": "Engineering School",
+            "formattedName": "Engineering School",
+            "givenName": "Engineering",
+            "familyName": "School",
+            "unstructuredName": "Engineering School"
+          }
+        ],
+        "photo": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "104216275657595076073",
+              "containerType": "PROFILE"
+            },
+            "url": "https://lh3.googleusercontent.com/a-/AOh14Gj_E7TWozKQ0cSoETIk--sxrhA73rjdhK8AMmx8HB_wIMJ9iPaEp0qbux1FMppa",
+            "isDefault": true,
+            "photoToken": "EhUxMDQyMTYyNzU2NTc1OTUwNzYwNzMoATCR4qLi-P____8B",
+            "isMonogram": true,
+            "monogramBackground": "78909C"
+          }
+        ],
+        "email": [
+          {
+            "metadata": {
+              "container": "DOMAIN_PROFILE",
+              "primary": true,
+              "verified": true,
+              "encodedContainerId": "104216275657595076073",
+              "containerType": "DOMAIN_PROFILE"
+            },
+            "value": "notice_soe@jnu.ac.in",
+            "extendedData": {
+              "smtpServerSupportsTls": true
+            }
+          }
+        ],
+        "readOnlyProfileInfo": [
+          {
+            "ownerId": "104216275657595076073",
+            "inViewerDomain": true
+          }
+        ]
+      }
+    },
+    {
+      "suggestion": "notice_ses@jnu.ac.in",
+      "objectType": "PERSON",
+      "person": {
+        "personId": "110046677235247747040",
+        "metadata": {
+          "ownerId": "110046677235247747040",
+          "objectType": "PERSON",
+          "inViewerDomain": true,
+          "lastUpdateTimeMicros": "1628892935672668",
+          "affinity": [
+            {
+              "loggingId": "KgPwZcQ="
+            }
+          ],
+          "identityInfo": {
+            "sourceIds": [
+              {
+                "container": "PROFILE",
+                "id": "110046677235247747040",
+                "containerType": "PROFILE"
+              }
+            ]
+          }
+        },
+        "name": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "110046677235247747040",
+              "containerType": "PROFILE"
+            },
+            "displayName": "Environmental Science",
+            "formattedName": "Environmental Science",
+            "givenName": "Environmental",
+            "familyName": "Science",
+            "unstructuredName": "Environmental Science"
+          }
+        ],
+        "photo": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "110046677235247747040",
+              "containerType": "PROFILE"
+            },
+            "url": "https://lh3.googleusercontent.com/a-/AOh14Gj_E7TWozKQ0cSoETIk--sxrhA73rjdhK8AMmx8HB_wIMJ9iPaEp0qbux1FMppa",
+            "isDefault": true,
+            "photoToken": "EhUxMTAwNDY2NzcyMzUyNDc3NDcwNDAoATCupeTWAw==",
+            "isMonogram": true,
+            "monogramBackground": "78909C"
+          }
+        ],
+        "email": [
+          {
+            "metadata": {
+              "container": "DOMAIN_PROFILE",
+              "primary": true,
+              "verified": true,
+              "encodedContainerId": "110046677235247747040",
+              "containerType": "DOMAIN_PROFILE"
+            },
+            "value": "notice_ses@jnu.ac.in",
+            "extendedData": {
+              "smtpServerSupportsTls": true
+            }
+          }
+        ],
+        "readOnlyProfileInfo": [
+          {
+            "ownerId": "110046677235247747040",
+            "inViewerDomain": true
+          }
+        ]
+      }
+    },
+    {
+      "suggestion": "notice_scis@jnu.ac.in",
+      "objectType": "PERSON",
+      "person": {
+        "personId": "106680996374278541557",
+        "metadata": {
+          "ownerId": "106680996374278541557",
+          "objectType": "PERSON",
+          "inViewerDomain": true,
+          "lastUpdateTimeMicros": "1628900414219275",
+          "affinity": [
+            {
+              "loggingId": "KgPwZcQ="
+            }
+          ],
+          "identityInfo": {
+            "sourceIds": [
+              {
+                "container": "PROFILE",
+                "id": "106680996374278541557",
+                "containerType": "PROFILE"
+              }
+            ]
+          }
+        },
+        "name": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "106680996374278541557",
+              "containerType": "PROFILE"
+            },
+            "displayName": "Integrative Science",
+            "formattedName": "Integrative Science",
+            "givenName": "Integrative",
+            "familyName": "Science",
+            "unstructuredName": "Integrative Science"
+          }
+        ],
+        "photo": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "106680996374278541557",
+              "containerType": "PROFILE"
+            },
+            "url": "https://lh3.googleusercontent.com/a-/AOh14Gjw-39OyKcPmT3l4MjdSlR426_7BmcU5s11iukqPbH42DdIE2FLqVRLCY6Y8B3T",
+            "isDefault": true,
+            "photoToken": "EhUxMDY2ODA5OTYzNzQyNzg1NDE1NTcoATCd_YCYAQ==",
+            "isMonogram": true,
+            "monogramBackground": "00897B"
+          }
+        ],
+        "email": [
+          {
+            "metadata": {
+              "container": "DOMAIN_PROFILE",
+              "primary": true,
+              "verified": true,
+              "encodedContainerId": "106680996374278541557",
+              "containerType": "DOMAIN_PROFILE"
+            },
+            "value": "notice_scis@jnu.ac.in",
+            "extendedData": {
+              "smtpServerSupportsTls": true
+            }
+          }
+        ],
+        "readOnlyProfileInfo": [
+          {
+            "ownerId": "106680996374278541557",
+            "inViewerDomain": true
+          }
+        ]
+      }
+    },
+    {
+      "suggestion": "notice_sis@jnu.ac.in",
+      "objectType": "PERSON",
+      "person": {
+        "personId": "107333820367750280941",
+        "metadata": {
+          "ownerId": "107333820367750280941",
+          "objectType": "PERSON",
+          "inViewerDomain": true,
+          "lastUpdateTimeMicros": "1628768019461860",
+          "affinity": [
+            {
+              "loggingId": "KgPwZcQ="
+            }
+          ],
+          "identityInfo": {
+            "sourceIds": [
+              {
+                "container": "PROFILE",
+                "id": "107333820367750280941",
+                "containerType": "PROFILE"
+              }
+            ]
+          }
+        },
+        "name": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "107333820367750280941",
+              "containerType": "PROFILE"
+            },
+            "displayName": "International Studies",
+            "formattedName": "International Studies",
+            "givenName": "International",
+            "familyName": "Studies",
+            "unstructuredName": "International Studies"
+          }
+        ],
+        "photo": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "107333820367750280941",
+              "containerType": "PROFILE"
+            },
+            "url": "https://lh3.googleusercontent.com/a-/AOh14Gh9TXCNGCU6zeYevNJnMrNywnhmjnJAup3GZxl0UYLNxPAgWnaUdQLMoacF6l5-",
+            "isDefault": true,
+            "photoToken": "EhUxMDczMzM4MjAzNjc3NTAyODA5NDEoATDG5Ybi-f____8B",
+            "isMonogram": true,
+            "monogramBackground": "8D6E63"
+          }
+        ],
+        "email": [
+          {
+            "metadata": {
+              "container": "DOMAIN_PROFILE",
+              "primary": true,
+              "verified": true,
+              "encodedContainerId": "107333820367750280941",
+              "containerType": "DOMAIN_PROFILE"
+            },
+            "value": "notice_sis@jnu.ac.in",
+            "extendedData": {
+              "smtpServerSupportsTls": true
+            }
+          }
+        ],
+        "readOnlyProfileInfo": [
+          {
+            "ownerId": "107333820367750280941",
+            "inViewerDomain": true
+          }
+        ]
+      }
+    },
+    {
+      "suggestion": "notice_sl@jnu.ac.in",
+      "objectType": "PERSON",
+      "person": {
+        "personId": "114560970139325433983",
+        "metadata": {
+          "ownerId": "114560970139325433983",
+          "objectType": "PERSON",
+          "inViewerDomain": true,
+          "lastUpdateTimeMicros": "1628980388085569",
+          "affinity": [
+            {
+              "loggingId": "KgPwZcQ="
+            }
+          ],
+          "identityInfo": {
+            "sourceIds": [
+              {
+                "container": "PROFILE",
+                "id": "114560970139325433983",
+                "containerType": "PROFILE"
+              }
+            ]
+          }
+        },
+        "name": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "114560970139325433983",
+              "containerType": "PROFILE"
+            },
+            "displayName": "Language Jnu",
+            "formattedName": "Language Jnu",
+            "givenName": "Language",
+            "familyName": "Jnu",
+            "unstructuredName": "Language Jnu"
+          }
+        ],
+        "photo": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "114560970139325433983",
+              "containerType": "PROFILE"
+            },
+            "url": "https://lh3.googleusercontent.com/a-/AOh14GirLFU0jBMSxr_c14geGRb--ckEGbbLOCth7CrbpcY6DXVeV6kWeKFSKPE3GCN3",
+            "isDefault": true,
+            "photoToken": "EhUxMTQ1NjA5NzAxMzkzMjU0MzM5ODMoATDU4LWbAw==",
+            "isMonogram": true,
+            "monogramBackground": "004D40"
+          }
+        ],
+        "email": [
+          {
+            "metadata": {
+              "container": "DOMAIN_PROFILE",
+              "primary": true,
+              "verified": true,
+              "encodedContainerId": "114560970139325433983",
+              "containerType": "DOMAIN_PROFILE"
+            },
+            "value": "notice_sl@jnu.ac.in",
+            "extendedData": {
+              "smtpServerSupportsTls": true
+            }
+          }
+        ],
+        "readOnlyProfileInfo": [
+          {
+            "ownerId": "114560970139325433983",
+            "inViewerDomain": true
+          }
+        ]
+      }
+    },
+    {
+      "suggestion": "notice_cslg@jnu.ac.in",
+      "objectType": "PERSON",
+      "person": {
+        "personId": "112788035633859941923",
+        "metadata": {
+          "ownerId": "112788035633859941923",
+          "objectType": "PERSON",
+          "inViewerDomain": true,
+          "lastUpdateTimeMicros": "1628811572739150",
+          "affinity": [
+            {
+              "loggingId": "KgPwZcQ="
+            }
+          ],
+          "identityInfo": {
+            "sourceIds": [
+              {
+                "container": "PROFILE",
+                "id": "112788035633859941923",
+                "containerType": "PROFILE"
+              }
+            ]
+          }
+        },
+        "name": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "112788035633859941923",
+              "containerType": "PROFILE"
+            },
+            "displayName": "Law Studies",
+            "formattedName": "Law Studies",
+            "givenName": "Law",
+            "familyName": "Studies",
+            "unstructuredName": "Law Studies"
+          }
+        ],
+        "photo": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "112788035633859941923",
+              "containerType": "PROFILE"
+            },
+            "url": "https://lh3.googleusercontent.com/a-/AOh14Gj3yADgiSJIrLmLPO2BmL18UgwZoECpInGpN1YJFmPNS3ILHLkWDWJ31O_41WBO",
+            "isDefault": true,
+            "photoToken": "EhUxMTI3ODgwMzU2MzM4NTk5NDE5MjMoATCciKO6-_____8B",
+            "isMonogram": true,
+            "monogramBackground": "512DA8"
+          }
+        ],
+        "email": [
+          {
+            "metadata": {
+              "container": "DOMAIN_PROFILE",
+              "primary": true,
+              "verified": true,
+              "encodedContainerId": "112788035633859941923",
+              "containerType": "DOMAIN_PROFILE"
+            },
+            "value": "notice_cslg@jnu.ac.in",
+            "extendedData": {
+              "smtpServerSupportsTls": true
+            }
+          }
+        ],
+        "readOnlyProfileInfo": [
+          {
+            "ownerId": "112788035633859941923",
+            "inViewerDomain": true
+          }
+        ]
+      }
+    },
+    {
+      "suggestion": "notice_abvsme@jnu.ac.in",
+      "objectType": "PERSON",
+      "person": {
+        "personId": "113661551187665083092",
+        "metadata": {
+          "ownerId": "113661551187665083092",
+          "objectType": "PERSON",
+          "inViewerDomain": true,
+          "lastUpdateTimeMicros": "1628979083314601",
+          "affinity": [
+            {
+              "loggingId": "KgPwZcQ="
+            }
+          ],
+          "identityInfo": {
+            "sourceIds": [
+              {
+                "container": "PROFILE",
+                "id": "113661551187665083092",
+                "containerType": "PROFILE"
+              }
+            ]
+          }
+        },
+        "name": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "113661551187665083092",
+              "containerType": "PROFILE"
+            },
+            "displayName": "Managemant School",
+            "formattedName": "Managemant School",
+            "givenName": "Managemant",
+            "familyName": "School",
+            "unstructuredName": "Managemant School"
+          }
+        ],
+        "photo": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "113661551187665083092",
+              "containerType": "PROFILE"
+            },
+            "url": "https://lh3.googleusercontent.com/a-/AOh14GgncEsfKFxbnNOnVrIOEDXGG5-bryRNf8aPnsL4zvbKFsZE_j242r4pp_XnPvv_",
+            "isDefault": true,
+            "photoToken": "EhUxMTM2NjE1NTExODc2NjUwODMwOTIoATDywYqe-f____8B",
+            "isMonogram": true,
+            "monogramBackground": "BF360C"
+          }
+        ],
+        "email": [
+          {
+            "metadata": {
+              "container": "DOMAIN_PROFILE",
+              "primary": true,
+              "verified": true,
+              "encodedContainerId": "113661551187665083092",
+              "containerType": "DOMAIN_PROFILE"
+            },
+            "value": "notice_abvsme@jnu.ac.in",
+            "extendedData": {
+              "smtpServerSupportsTls": true
+            }
+          }
+        ],
+        "readOnlyProfileInfo": [
+          {
+            "ownerId": "113661551187665083092",
+            "inViewerDomain": true
+          }
+        ]
+      }
+    },
+    {
+      "suggestion": "notice_scmm@jnu.ac.in",
+      "objectType": "PERSON",
+      "person": {
+        "personId": "101934743349724214903",
+        "metadata": {
+          "ownerId": "101934743349724214903",
+          "objectType": "PERSON",
+          "inViewerDomain": true,
+          "lastUpdateTimeMicros": "1628837098974370",
+          "affinity": [
+            {
+              "loggingId": "KgPwZcQ="
+            }
+          ],
+          "identityInfo": {
+            "sourceIds": [
+              {
+                "container": "PROFILE",
+                "id": "101934743349724214903",
+                "containerType": "PROFILE"
+              }
+            ]
+          }
+        },
+        "name": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "101934743349724214903",
+              "containerType": "PROFILE"
+            },
+            "displayName": "Molecular Medicine",
+            "formattedName": "Molecular Medicine",
+            "givenName": "Molecular",
+            "familyName": "Medicine",
+            "unstructuredName": "Molecular Medicine"
+          }
+        ],
+        "photo": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "101934743349724214903",
+              "containerType": "PROFILE"
+            },
+            "url": "https://lh3.googleusercontent.com/a-/AOh14GjMz6odGDOkVwNcXg6aw1aqzaNdX2EQpJZM3SOyuA7e70K8rH-eC2fqz0CVEA1e",
+            "isDefault": true,
+            "photoToken": "EhUxMDE5MzQ3NDMzNDk3MjQyMTQ5MDMoATCX472o-_____8B",
+            "isMonogram": true,
+            "monogramBackground": "5C6BC0"
+          }
+        ],
+        "email": [
+          {
+            "metadata": {
+              "container": "DOMAIN_PROFILE",
+              "primary": true,
+              "verified": true,
+              "encodedContainerId": "101934743349724214903",
+              "containerType": "DOMAIN_PROFILE"
+            },
+            "value": "notice_scmm@jnu.ac.in",
+            "extendedData": {
+              "smtpServerSupportsTls": true
+            }
+          }
+        ],
+        "readOnlyProfileInfo": [
+          {
+            "ownerId": "101934743349724214903",
+            "inViewerDomain": true
+          }
+        ]
+      }
+    },
+    {
+      "suggestion": "notice_scns@jnu.ac.in",
+      "objectType": "PERSON",
+      "person": {
+        "personId": "116510358165314146592",
+        "metadata": {
+          "ownerId": "116510358165314146592",
+          "objectType": "PERSON",
+          "inViewerDomain": true,
+          "lastUpdateTimeMicros": "1628825044091233",
+          "affinity": [
+            {
+              "loggingId": "KgPwZcQ="
+            }
+          ],
+          "identityInfo": {
+            "sourceIds": [
+              {
+                "container": "PROFILE",
+                "id": "116510358165314146592",
+                "containerType": "PROFILE"
+              }
+            ]
+          }
+        },
+        "name": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "116510358165314146592",
+              "containerType": "PROFILE"
+            },
+            "displayName": "Nano Science",
+            "formattedName": "Nano Science",
+            "givenName": "Nano",
+            "familyName": "Science",
+            "unstructuredName": "Nano Science"
+          }
+        ],
+        "photo": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "116510358165314146592",
+              "containerType": "PROFILE"
+            },
+            "url": "https://lh3.googleusercontent.com/a-/AOh14GhY05I-wv71-zV7EKRykYzNM0pDOeKty3srM0SyrCSC-2AY8Vg2vh-8VbHpEIiN",
+            "isDefault": true,
+            "photoToken": "EhUxMTY1MTAzNTgxNjUzMTQxNDY1OTIoATDCv8XH-_____8B",
+            "isMonogram": true,
+            "monogramBackground": "0288D1"
+          }
+        ],
+        "email": [
+          {
+            "metadata": {
+              "container": "DOMAIN_PROFILE",
+              "primary": true,
+              "verified": true,
+              "encodedContainerId": "116510358165314146592",
+              "containerType": "DOMAIN_PROFILE"
+            },
+            "value": "notice_scns@jnu.ac.in",
+            "extendedData": {
+              "smtpServerSupportsTls": true
+            }
+          }
+        ],
+        "readOnlyProfileInfo": [
+          {
+            "ownerId": "116510358165314146592",
+            "inViewerDomain": true
+          }
+        ]
+      }
+    },
+    {
+      "suggestion": "notice_nss@jnu.ac.in",
+      "objectType": "PERSON",
+      "person": {
+        "personId": "108406229476191663647",
+        "metadata": {
+          "ownerId": "108406229476191663647",
+          "objectType": "PERSON",
+          "inViewerDomain": true,
+          "lastUpdateTimeMicros": "1628827471327066",
+          "affinity": [
+            {
+              "loggingId": "KgPwZcQ="
+            }
+          ],
+          "identityInfo": {
+            "sourceIds": [
+              {
+                "container": "PROFILE",
+                "id": "108406229476191663647",
+                "containerType": "PROFILE"
+              }
+            ]
+          }
+        },
+        "name": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "108406229476191663647",
+              "containerType": "PROFILE"
+            },
+            "displayName": "National Security",
+            "formattedName": "National Security",
+            "givenName": "National",
+            "familyName": "Security",
+            "unstructuredName": "National Security"
+          }
+        ],
+        "photo": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "108406229476191663647",
+              "containerType": "PROFILE"
+            },
+            "url": "https://lh3.googleusercontent.com/a-/AOh14GgPUYTtgDpcJa2hr33LPVjqHeJklIhXeWF5Bs2roG43kgM1wFCvkcJQCJV1vjyN",
+            "isDefault": true,
+            "photoToken": "EhUxMDg0MDYyMjk0NzYxOTE2NjM2NDcoATDPp4Kd______8B",
+            "isMonogram": true,
+            "monogramBackground": "689F38"
+          }
+        ],
+        "email": [
+          {
+            "metadata": {
+              "container": "DOMAIN_PROFILE",
+              "primary": true,
+              "verified": true,
+              "encodedContainerId": "108406229476191663647",
+              "containerType": "DOMAIN_PROFILE"
+            },
+            "value": "notice_nss@jnu.ac.in",
+            "extendedData": {
+              "smtpServerSupportsTls": true
+            }
+          }
+        ],
+        "readOnlyProfileInfo": [
+          {
+            "ownerId": "108406229476191663647",
+            "inViewerDomain": true
+          }
+        ]
+      }
+    },
+    {
+      "suggestion": "notice_scsne@jnu.ac.in",
+      "objectType": "PERSON",
+      "person": {
+        "personId": "106160409582288760801",
+        "metadata": {
+          "ownerId": "106160409582288760801",
+          "objectType": "PERSON",
+          "inViewerDomain": true,
+          "lastUpdateTimeMicros": "1628841800776728",
+          "affinity": [
+            {
+              "loggingId": "KgPwZcQ="
+            }
+          ],
+          "identityInfo": {
+            "sourceIds": [
+              {
+                "container": "PROFILE",
+                "id": "106160409582288760801",
+                "containerType": "PROFILE"
+              }
+            ]
+          }
+        },
+        "name": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "106160409582288760801",
+              "containerType": "PROFILE"
+            },
+            "displayName": "NorthEast India",
+            "formattedName": "NorthEast India",
+            "givenName": "NorthEast",
+            "familyName": "India",
+            "unstructuredName": "NorthEast India"
+          }
+        ],
+        "photo": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "106160409582288760801",
+              "containerType": "PROFILE"
+            },
+            "url": "https://lh3.googleusercontent.com/a-/AOh14GgPUYTtgDpcJa2hr33LPVjqHeJklIhXeWF5Bs2roG43kgM1wFCvkcJQCJV1vjyN",
+            "isDefault": true,
+            "photoToken": "EhUxMDYxNjA0MDk1ODIyODg3NjA4MDEoATCFs7meBw==",
+            "isMonogram": true,
+            "monogramBackground": "689F38"
+          }
+        ],
+        "email": [
+          {
+            "metadata": {
+              "container": "DOMAIN_PROFILE",
+              "primary": true,
+              "verified": true,
+              "encodedContainerId": "106160409582288760801",
+              "containerType": "DOMAIN_PROFILE"
+            },
+            "value": "notice_scsne@jnu.ac.in",
+            "extendedData": {
+              "smtpServerSupportsTls": true
+            }
+          }
+        ],
+        "readOnlyProfileInfo": [
+          {
+            "ownerId": "106160409582288760801",
+            "inViewerDomain": true
+          }
+        ]
+      }
+    },
+    {
+      "suggestion": "notice_sps@jnu.ac.in",
+      "objectType": "PERSON",
+      "person": {
+        "personId": "118039779955726122768",
+        "metadata": {
+          "ownerId": "118039779955726122768",
+          "objectType": "PERSON",
+          "inViewerDomain": true,
+          "lastUpdateTimeMicros": "1628851580528371",
+          "affinity": [
+            {
+              "loggingId": "KgPwZcQ="
+            }
+          ],
+          "identityInfo": {
+            "sourceIds": [
+              {
+                "container": "PROFILE",
+                "id": "118039779955726122768",
+                "containerType": "PROFILE"
+              }
+            ]
+          }
+        },
+        "name": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "118039779955726122768",
+              "containerType": "PROFILE"
+            },
+            "displayName": "Physical School",
+            "formattedName": "Physical School",
+            "givenName": "Physical",
+            "familyName": "School",
+            "unstructuredName": "Physical School"
+          }
+        ],
+        "photo": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "118039779955726122768",
+              "containerType": "PROFILE"
+            },
+            "url": "https://lh3.googleusercontent.com/a-/AOh14GiLFBx7Uq1y23E3yFajFK-V5INHVkO4UOXka-71GKXHr6N8EfIBQMkx1yDnQvxv",
+            "isDefault": true,
+            "photoToken": "EhUxMTgwMzk3Nzk5NTU3MjYxMjI3NjgoATDD-abm-f____8B",
+            "isMonogram": true,
+            "monogramBackground": "7E57C2"
+          }
+        ],
+        "email": [
+          {
+            "metadata": {
+              "container": "DOMAIN_PROFILE",
+              "primary": true,
+              "verified": true,
+              "encodedContainerId": "118039779955726122768",
+              "containerType": "DOMAIN_PROFILE"
+            },
+            "value": "notice_sps@jnu.ac.in",
+            "extendedData": {
+              "smtpServerSupportsTls": true
+            }
+          }
+        ],
+        "readOnlyProfileInfo": [
+          {
+            "ownerId": "118039779955726122768",
+            "inViewerDomain": true
+          }
+        ]
+      }
+    },
+    {
+      "suggestion": "notice_ssis@jnu.ac.in",
+      "objectType": "PERSON",
+      "person": {
+        "personId": "105631034491902231329",
+        "metadata": {
+          "ownerId": "105631034491902231329",
+          "objectType": "PERSON",
+          "inViewerDomain": true,
+          "lastUpdateTimeMicros": "1628846584345593",
+          "affinity": [
+            {
+              "loggingId": "KgPwZcQ="
+            }
+          ],
+          "identityInfo": {
+            "sourceIds": [
+              {
+                "container": "PROFILE",
+                "id": "105631034491902231329",
+                "containerType": "PROFILE"
+              }
+            ]
+          }
+        },
+        "name": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "105631034491902231329",
+              "containerType": "PROFILE"
+            },
+            "displayName": "Sanskrit Studies",
+            "formattedName": "Sanskrit Studies",
+            "givenName": "Sanskrit",
+            "familyName": "Studies",
+            "unstructuredName": "Sanskrit Studies"
+          }
+        ],
+        "photo": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "105631034491902231329",
+              "containerType": "PROFILE"
+            },
+            "url": "https://lh3.googleusercontent.com/a-/AOh14GiR_I8rmWbmHo1eKHtuMn0nHQq6WkqYcNUqfJbDa6Ra5Rj9ADPw0fs7587Z99we",
+            "isDefault": true,
+            "photoToken": "EhUxMDU2MzEwMzQ0OTE5MDIyMzEzMjkoATCggMS5AQ==",
+            "isMonogram": true,
+            "monogramBackground": "33691E"
+          }
+        ],
+        "email": [
+          {
+            "metadata": {
+              "container": "DOMAIN_PROFILE",
+              "primary": true,
+              "verified": true,
+              "encodedContainerId": "105631034491902231329",
+              "containerType": "DOMAIN_PROFILE"
+            },
+            "value": "notice_ssis@jnu.ac.in",
+            "extendedData": {
+              "smtpServerSupportsTls": true
+            }
+          }
+        ],
+        "readOnlyProfileInfo": [
+          {
+            "ownerId": "105631034491902231329",
+            "inViewerDomain": true
+          }
+        ]
+      }
+    },
+    {
+      "suggestion": "notice_sss@jnu.ac.in",
+      "objectType": "PERSON",
+      "person": {
+        "personId": "111053323729016258639",
+        "metadata": {
+          "ownerId": "111053323729016258639",
+          "objectType": "PERSON",
+          "inViewerDomain": true,
+          "lastUpdateTimeMicros": "1628825491571155",
+          "affinity": [
+            {
+              "loggingId": "KgPwZcQ="
+            }
+          ],
+          "identityInfo": {
+            "sourceIds": [
+              {
+                "container": "PROFILE",
+                "id": "111053323729016258639",
+                "containerType": "PROFILE"
+              }
+            ]
+          }
+        },
+        "name": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "111053323729016258639",
+              "containerType": "PROFILE"
+            },
+            "displayName": "Social Science",
+            "formattedName": "Social Science",
+            "givenName": "Social",
+            "familyName": "Science",
+            "unstructuredName": "Social Science"
+          }
+        ],
+        "photo": [
+          {
+            "metadata": {
+              "container": "PROFILE",
+              "encodedContainerId": "111053323729016258639",
+              "containerType": "PROFILE"
+            },
+            "url": "https://lh3.googleusercontent.com/a-/AOh14Gh2CWXy_r7pkgcdh-XT-mDZbtZVOPeO5rObEHUhUYaEc-Zh1bssD85mekfiAJVj",
+            "isDefault": true,
+            "photoToken": "EhUxMTEwNTMzMjM3MjkwMTYyNTg2MzkoATDGrNnrAw==",
+            "isMonogram": true,
+            "monogramBackground": "0288D1"
+          }
+        ],
+        "email": [
+          {
+            "metadata": {
+              "container": "DOMAIN_PROFILE",
+              "primary": true,
+              "verified": true,
+              "encodedContainerId": "111053323729016258639",
+              "containerType": "DOMAIN_PROFILE"
+            },
+            "value": "notice_sss@jnu.ac.in",
+            "extendedData": {
+              "smtpServerSupportsTls": true
+            }
+          }
+        ],
+        "readOnlyProfileInfo": [
+          {
+            "ownerId": "111053323729016258639",
+            "inViewerDomain": true
+          }
+        ]
+      }
+    }
+  ],
+  "nextPageToken": "CBQSFTExMTA1MzMyMzcyOTAxNjI1ODYzOQ",
+  "status": {}
+}

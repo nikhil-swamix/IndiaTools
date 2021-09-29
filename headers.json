@@ -1,0 +1,90 @@
+{
+	"Request Headers (0.992 KB)": {
+		"headers": [
+			{
+				"name": "Accept",
+				"value": "*/*"
+			},
+			{
+				"name": "Accept-Encoding",
+				"value": "gzip, deflate, br"
+			},
+			{
+				"name": "Accept-Language",
+				"value": "en-US,en;q=0.5"
+			},
+			{
+				"name": "Connection",
+				"value": "keep-alive"
+			},
+			{
+				"name": "Content-Length",
+				"value": "213"
+			},
+			{
+				"name": "Content-Type",
+				"value": "application/json"
+			},
+			{
+				"name": "Cookie",
+				"value": "m-b=P8nRZLz_wXBu6QjZDX_4rg==; m-b_lax=P8nRZLz_wXBu6QjZDX_4rg==; m-b_strict=P8nRZLz_wXBu6QjZDX_4rg==; m-s=Cy5DS2w44eGcDa8Bvm8HJg==; m-uid=None; m-ans_frontend_early_version=c61d66ddc0dbe89c; m-dynamicFontSize=regular; G_ENABLED_IDPS=google"
+			},
+			{
+				"name": "DNT",
+				"value": "1"
+			},
+			{
+				"name": "Host",
+				"value": "www.quora.com"
+			},
+			{
+				"name": "Origin",
+				"value": "https://www.quora.com"
+			},
+			{
+				"name": "Quora-Broadcast-Id",
+				"value": "main-w-chan51-8888-react_lxwegywlltwbievh-9EDv"
+			},
+			{
+				"name": "Quora-Canary-Revision",
+				"value": "false"
+			},
+			{
+				"name": "Quora-Formkey",
+				"value": "6c12a4dc7652658b73722b534ee1ddc1"
+			},
+			{
+				"name": "Quora-Revision",
+				"value": "19aa0243f5c7a28b758a8e667ec37b6688f6ef2a"
+			},
+			{
+				"name": "Quora-Window-Id",
+				"value": "react_lxwegywlltwbievh"
+			},
+			{
+				"name": "Referer",
+				"value": "https://www.quora.com/profile/Adams-Matthew-2/posts"
+			},
+			{
+				"name": "Sec-Fetch-Dest",
+				"value": "empty"
+			},
+			{
+				"name": "Sec-Fetch-Mode",
+				"value": "cors"
+			},
+			{
+				"name": "Sec-Fetch-Site",
+				"value": "same-origin"
+			},
+			{
+				"name": "TE",
+				"value": "trailers"
+			},
+			{
+				"name": "User-Agent",
+				"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:92.0) Gecko/20100101 Firefox/92.0"
+			}
+		]
+	}
+}

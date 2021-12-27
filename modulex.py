@@ -279,7 +279,7 @@ def get_page_selenium(driver,url,new_tab=0,delay=2,waitcondition=lambda:True,wai
 		return driver.page_source
 	except Exception as e:	
 		print(repr(e))
-
+# ____________________________
 def parse_header(*firefoxAllHeaders,file=''):
 	if firefoxAllHeaders: rawheader=firefoxAllHeaders[0] 
 	if file: rawheader=jload(file)
@@ -287,9 +287,14 @@ def parse_header(*firefoxAllHeaders,file=''):
 	# print(serializedHeaders)
 	return { k:v for k,v in [x.values() for x in serializedHeaders] }
 
+def parse_raw_header(filepath):
+	data=fread(filepath)
+	result=dict([[ *map(lambda x: x.strip(),h.partition(':')[0::2],) ] for h in rawheaders.split('\n')])
+	return result
+# ____________________________
+
 def make_cookie(req):
 	return ';'.join([f'{k}={v}' for k,v in req.cookies.items()])
-	...
 
 def wlan_ip():
     import subprocess

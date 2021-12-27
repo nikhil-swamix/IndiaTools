@@ -288,7 +288,7 @@ def parse_header(*firefoxAllHeaders,file=''):
 	return { k:v for k,v in [x.values() for x in serializedHeaders] }
 
 def parse_raw_header(filepath):
-	data=fread(filepath)
+	rawheaders=fread(filepath)
 	result=dict([[ *map(lambda x: x.strip(),h.partition(':')[0::2],) ] for h in rawheaders.split('\n')])
 	return result
 # ____________________________

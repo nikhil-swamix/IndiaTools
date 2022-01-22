@@ -80,7 +80,7 @@ def fappend(fname, content, suffix="\n"):
 def touch(fpath, data=""):
 	try:
 		os.makedirs(os.path.split(fpath)[0], exist_ok=True)
-	except:
+	except:  # noqa: E722
 		pass
 	if not os.path.exists(fpath):
 		fwrite(fpath, data)
@@ -96,16 +96,17 @@ def fgetlastmod(path):
 
 def fincrement(cname, lock=None):
 	'''
-	uses a file as incrementer, slow, use in 
+	uses a file as incrementer, slow, use in
 	rare cases where you would need persistance storage.
 	Uses lock to prevent I/O race condition.
 	lock is derived from threading module.
 	'''
 	if lock:
-		with lock.acquire():
+		with lock.acquire() as l:  # noqa: E741
 			c = int(fread(cname))
 			c += 1
 			fwrite(cname, str(c))
+			l.release()
 	else:
 		print("please use lock")
 
@@ -202,75 +203,29 @@ def hash(string):
 	return hashlib.md5(string.encode("utf-8")).hexdigest()
 
 
-# AUTO_PIP______________________________________
-def auto_pip(modulesList, mode="install"):
-	"""
-	+DOC:
-					automatically Install Pip Packages With Missing Module && upgrades pip if its old,
-	+USAGE:
-					auto_pip('mode',[modules,...]) #where mode can be {install,uninstall,download} and modules is
-					auto_pip('install',['pytorch','numpy','etc...'])
-	+NOTES: downloading can be useful if want to install later
-	from local source and avoid network cost.
-	"""
-	modulesList = [modulesList] if isinstance(
-		modulesList, str) else modulesList
-	import subprocess as sp
+# REQUIRE: THE DEPENDENCY MANAGER____________________
+def require(modules_list: list[str]):
+	if type(modules_list) is list:
+		pass
+	else:
+		modules_list = [modules_list]
 
-	proc = sp.run("pip list", stdout=sp.PIPE, stderr=sp.PIPE, text=1)
-	if "You should consider upgrading" in proc.stderr:
-		upgradeCommand = proc.stderr.split("'")
-		sp.run(upgradeCommand[1])
+	for m in modules_list:
+		try:
+			exec(f'import {m}')
 
-	pipInstallSignal, pipUninstallSignal = 0, 0  # declare signals as 0,
-	satisfied = {
-		x: (x.lower() in proc.stdout.lower()) for x in modulesList
-		}  # list booleanization
-	for k, v in satisfied.items():
-		if not v:
-			print(k, "is missing", end=" =|= ")
-		# print(k+'\t:preinstalled')  else )
-		if v is False:
-			pipInstallSignal = 1
-		if v is True:
-			pipUninstallSignal = 1  # NAND Condition if true then start uninstalling
-
-	if mode == "download":
-		proc = sp.run(f'pip download {" ".join(modulesList)} ', stdout=sp.PIPE, shell=0)
-		output = proc.stdout.read().decode("ascii").split("\n")
-		print([x for x in output if "Successfully" in x][0])
-		proc.kill()
-
-	if mode == "install":
-		if pipInstallSignal:
-			proc = sp.run(
-				f'pip install {" ".join(modulesList)} -U'.format(), text=True, shell=1
-				)
-		else:
-			print(f"{modulesList} were already installed")
-			return 1
-
-	if mode == "uninstall":
-		if pipUninstallSignal:
-			proc = sp.run(
-				f'pip uninstall -y {" ".join(modulesList)}', text=True, shell=0
-				)
-		else:
-			print(f"\n{modulesList} were already uninstalled")
-			return 1
-
-	if proc.returncode == 0:
-		print("auto_pip Run Success")
-		return proc.returncode
+		except Exception as e:
+			print(e)
+			os.system(f"pip install {m}")
 
 
 # SIMPLE-DB_________________________________
 def hash_db(hashkey, *hashvalue, dirname="./LOCAL_DATABASE/"):
 	"""
-	desc:
-					creates a folder , and stores individual hashes as files.
-					if : an index(hashkey) is given then check is file exists and open and return a dict{}
-					else : if second argument (hashvalue[]) is given then create a dict
+	DESC:
+		creates a folder , and stores individual hashes as files.
+		if: an index(hashkey) is given then check is file exists and open and return a dict{}
+		else: if second argument (hashvalue[]) is given then create a dict
 	"""
 	itempath = dirname + hashkey
 	if hashvalue:  # write inputted value to memory
@@ -291,7 +246,7 @@ def apply_async(*args):
 			*args,
 			)
 		return result
-	except:
+	except Exception:
 		POOL = ThreadPoolExecutor(MAX_THREADS)
 		result = POOL.submit(
 			*args,
@@ -382,20 +337,20 @@ def make_selenium_driver(headless=False, strategy="eager", timeout=10):
 
 
 def get_page_selenium(
-    driver,
-    url,
-    new_tab=0,
-    delay=2,
-    waitcondition=lambda: True,
-    waitcondition_polling=0.2,
-    waitcondition_retries=10,
+	driver,
+	url,
+	new_tab=0,
+	delay=2,
+	waitcondition=lambda: True,
+	waitcondition_polling=0.2,
+	waitcondition_retries=10,
 ):
 	try:
 		if new_tab:
 			driver.execute_script("window.open('{}', '_blank')".format(url))
 		driver.get(url)
 
-		while waitcondition() == False:
+		while waitcondition() is False:
 			if retry >= waitcondition_retries:
 				break
 			time.sleep(waitcondition_polling)
@@ -455,14 +410,14 @@ class Tests:
 			d = requests.get(url2)
 			print("fetch success", d.text)
 
-		url1 = "http://swamix.com/"
+		# url1 = "http://swamix.com/"
 		url2 = "http://swamix.com/api/news/tech"
-		Parallelizer.tpoolexec(reqfn, threadCount=100)
+		Parallelizer.tpoolexec(reqfn, threadCount=100)  # noqa: F821
 
 
-def force_commit():
+def i_want_to_release_this_version_on_github():
 	os.system(f"git commit -m \"force committed on \"")
-	os.system(f"git push -f")
+	os.system("git push -f")
 
 #                  _                       _
 #                 (_)                     | |
@@ -475,7 +430,11 @@ def force_commit():
 
 if __name__ == "__main__":
 	print(randomstring(100))
-	force_commit()
+
+	a = [12, 3, 23, 234, 23]
+	a = numpy.zeros(10)
+	print(a)
+	# require(['numpy', 'pandas', 'bs4'])
 
 
 # html body div#root div.a.b.c div.s article.meteredContent div section.de.df.dg.dh.di

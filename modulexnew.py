@@ -1,3 +1,4 @@
+# V2.0
 ##     ##  #######  ########  ##     ## ##       ######## ##     ##
 ###   ### ##     ## ##     ## ##     ## ##       ##        ##   ##
 #### #### ##     ## ##     ## ##     ## ##       ##         ## ##
@@ -28,20 +29,17 @@
 # ╚══════╝ ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝
 
 
-import os, time
+import os
+import time
 import random
 import json
-from pprint import pprint
 
 
 import sys
 
-if sys.executable.endswith("pypy3.exe"):
-    pathlist = setload("python.paths")
-    print(pathlist)
-    sys.path.extend(pathlist)
-
 # SET DATABASE ------------------
+
+
 def setload(path, seperator="\n"):
     rset = set(fread(path).split(seperator))
     rset.remove("") if "" in rset else ""
@@ -70,7 +68,7 @@ def fread(path):
 
 
 def fwrite(fpath, content):
-    f = open(fpath, "w+", errors="ignore")
+    f = open(fpath, "w+", encoding="utf-8", errors="ignore")
     f.write(content)
 
 
@@ -82,25 +80,38 @@ def fappend(fname, content, suffix="\n"):
 def touch(fpath, data=""):
     try:
         os.makedirs(os.path.split(fpath)[0], exist_ok=True)
-    except:
+    except Exception:
         pass
     if not os.path.exists(fpath):
         fwrite(fpath, data)
         print("Touched", fpath)
 
 
-def fdelta(path):
+def fgetlastmod(path):
+    '''
+    Get Last modified time of a file
+    '''
     return time.time() - os.path.getmtime(path)
 
 
-# COUNTERS------------------------
-def fincrement(cname, lock=""):
-    c = int(fread(cname))
-    c += 1
-    fwrite(cname, str(c))
-
+def fincrement(cname, lock=None):
+    '''
+    uses a file as incrementer, slow, use in
+    rare cases where you would need persistance storage.
+    Uses lock to prevent I/O race condition.
+    lock is derived from threading module.
+    '''
+    if lock:
+        with lock.acquire():
+            c = int(fread(cname))
+            c += 1
+            fwrite(cname, str(c))
+    else:
+        print("please use lock")
 
 # JSON----------------------------
+
+
 def jloads(string):
     return json.loads(string)  # dict
 
@@ -131,7 +142,7 @@ def jloadlines(path):
     for w in jsonlines:
         try:
             jldict.update(jloads(w))
-        except:
+        except Exception:
             pass
     return jldict
 
@@ -141,9 +152,10 @@ def list_files_timesorted(folder):
 
 
 # TIMESTAMPERS---------------------
+
+
 def datetime(filesafe=1):
     from datetime import datetime
-
     template = "%Y%m%dT%H%M%S" if filesafe else "%Y-%m-%dT%H:%M:%S"
     return datetime.today().strftime(template)
 
@@ -154,11 +166,12 @@ def date():
 
 def now():
     import time
-
     return int(time.time())
 
 
 # RANDOMIZERS ---------------------
+
+
 def shuffle(L):
     return [poprandom(L) for x in range(len(L))]
 
@@ -193,14 +206,16 @@ def hash(string):
 def auto_pip(modulesList, mode="install"):
     """
     +DOC:
-            automatically Install Pip Packages With Missing Module && upgrades pip if its old,
+                    automatically Install Pip Packages With Missing Module && upgrades pip if its old,
     +USAGE:
-            auto_pip('mode',[modules,...]) #where mode can be {install,uninstall,download} and modules is
-            auto_pip('install',['pytorch','numpy','etc...'])
+                    #where mode can be {install,uninstall,download} and modules is
+                    auto_pip('mode',[modules,...])
+                    auto_pip('install',['pytorch','numpy','etc...'])
     +NOTES: downloading can be useful if want to install later
     from local source and avoid network cost.
     """
-    modulesList = [modulesList] if isinstance(modulesList, str) else modulesList
+    modulesList = [modulesList] if isinstance(
+        modulesList, str) else modulesList
     import subprocess as sp
 
     proc = sp.run("pip list", stdout=sp.PIPE, stderr=sp.PIPE, text=1)
@@ -211,14 +226,14 @@ def auto_pip(modulesList, mode="install"):
     pipInstallSignal, pipUninstallSignal = 0, 0  # declare signals as 0,
     satisfied = {
         x: (x.lower() in proc.stdout.lower()) for x in modulesList
-    }  # list booleanization
+        }  # list booleanization
     for k, v in satisfied.items():
         if not v:
             print(k, "is missing", end=" =|= ")
         # print(k+'\t:preinstalled')  else )
-        if v == False:
+        if v is False:
             pipInstallSignal = 1
-        if v == True:
+        if v is True:
             pipUninstallSignal = 1  # NAND Condition if true then start uninstalling
 
     if mode == "download":
@@ -228,19 +243,19 @@ def auto_pip(modulesList, mode="install"):
         proc.kill()
 
     if mode == "install":
-        if pipInstallSignal == True:
+        if pipInstallSignal:
             proc = sp.run(
                 f'pip install {" ".join(modulesList)} -U'.format(), text=True, shell=1
-            )
+                )
         else:
             print(f"{modulesList} were already installed")
             return 1
 
     if mode == "uninstall":
-        if pipUninstallSignal == True:
+        if pipUninstallSignal:
             proc = sp.run(
                 f'pip uninstall -y {" ".join(modulesList)}', text=True, shell=0
-            )
+                )
         else:
             print(f"\n{modulesList} were already uninstalled")
             return 1
@@ -254,9 +269,9 @@ def auto_pip(modulesList, mode="install"):
 def hash_db(hashkey, *hashvalue, dirname="./LOCAL_DATABASE/"):
     """
     desc:
-            creates a folder , and stores individual hashes as files.
-            if : an index(hashkey) is given then check is file exists and open and return a dict{}
-            else : if second argument (hashvalue[]) is given then create a dict
+                    creates a folder , and stores individual hashes as files.
+                    if : an index(hashkey) is given then check is file exists and open and return a dict{}
+                    else : if second argument (hashvalue[]) is given then create a dict
     """
     itempath = dirname + hashkey
     if hashvalue:  # write inputted value to memory
@@ -265,7 +280,7 @@ def hash_db(hashkey, *hashvalue, dirname="./LOCAL_DATABASE/"):
 
 
 # THREADING__________________________________
-maxThreads = 128
+MAX_THREADS = 128
 
 
 def apply_async(*args):
@@ -275,13 +290,13 @@ def apply_async(*args):
     try:
         result = POOL.submit(
             *args,
-        )
+            )
         return result
     except:
-        POOL = ThreadPoolExecutor(maxThreads)
+        POOL = ThreadPoolExecutor(MAX_THREADS)
         result = POOL.submit(
             *args,
-        )
+            )
         return result
 
 
@@ -411,7 +426,7 @@ def wlan_ip():
 
     result = subprocess.run(
         "ipconfig", stdout=subprocess.PIPE, text=True
-    ).stdout.lower()
+        ).stdout.lower()
     scan = 0
     for i in result.split("\n"):
         if "wireless" in i:
@@ -446,13 +461,9 @@ class Tests:
         Parallelizer.tpoolexec(reqfn, threadCount=100)
 
 
-def sync_pypy():
-    import sys
-
-    if sys.executable.endswith("python.exe"):
-        pypypathsync = [x for x in sys.path]
-        fwrite("python.paths", "\n".join(pypypathsync))
-
+def force_commit():
+    os.system(f"git commit -m \"force committed on \"")
+    os.system(f"git push -f")
 
 #                  _                       _
 #                 (_)                     | |
@@ -466,5 +477,8 @@ def sync_pypy():
 if __name__ == "__main__":
     print(randomstring(100))
 
+    class Agent:
+        pass
+    print(type(Agent()) is Agent)
 
 # html body div#root div.a.b.c div.s article.meteredContent div section.de.df.dg.dh.di

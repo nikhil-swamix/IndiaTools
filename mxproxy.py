@@ -1,6 +1,12 @@
 import sys
 import os
-import datetime
+from datetime import datetime
+
+try:
+    import requests
+except Exception as e:
+    os.system('pip install requests')
+
 VERSION_LOCK = 1
 
 
@@ -25,16 +31,18 @@ def progressive_import():
 
 
 def fetch_latest_copy():
-    progressive_import()
     # print((mx.get_page('https://raw.githubusercontent.com/BinarySwami-10/modulex/master/modulex.py').text))
     if not os.path.exists('modulex.py'):
-    	mx.fwrite('modulex.py', f"#last fetched on {datetime.datetime()}\n"+mx.get_page(
+        pagedata = requests.get(
             'https://raw.githubusercontent.com/BinarySwami-10/modulex/master/modulex.py').text
-            )
+        print('page fetched, now writing')
+        open('modulex.py', '+w', encoding="utf-8").write(f"#last fetched on {datetime.now()}\n" + pagedata, )
     else:
-    	print('Modulex already present')
+        print('Modulex already present')
 
 
-fetch_latest_copy()
 if __name__ == '__main__':
+    print(datetime.now())
+    fetch_latest_copy()
+else:
     fetch_latest_copy()

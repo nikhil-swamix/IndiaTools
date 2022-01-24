@@ -1,6 +1,6 @@
 import sys
 import os
-
+import datetime
 VERSION_LOCK = 1
 
 
@@ -27,12 +27,14 @@ def progressive_import():
 def fetch_latest_copy():
     progressive_import()
     # print((mx.get_page('https://raw.githubusercontent.com/BinarySwami-10/modulex/master/modulex.py').text))
-    mx.fwrite('modulexnew.py', mx.get_page(
-        'https://raw.githubusercontent.com/BinarySwami-10/modulex/master/modulex.py').text
-        )
+    if not os.path.exists('modulex.py'):
+    	mx.fwrite('modulex.py', f"#last fetched on {datetime.datetime()}\n"+mx.get_page(
+            'https://raw.githubusercontent.com/BinarySwami-10/modulex/master/modulex.py').text
+            )
+    else:
+    	print('Modulex already present')
 
 
 fetch_latest_copy()
 if __name__ == '__main__':
-    os.
     fetch_latest_copy()

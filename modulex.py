@@ -391,16 +391,16 @@ def wlan_ip():
 
 
 # Benchmarking _________________
-def timeit(fn, *args, times=1000):
+def timeit(fn, *args, times=1000, verbose=False):
 	import time
 
 	ts = time.time()
-	print(f"LOG: run {fn.__name__} X {times} Times")
+	print(f"LOG: run {fn.__name__} X {times} Times") if verbose else None
 	for x in range(times):
 		fnoutput = fn(*args)
 	tdelta = time.time() - ts
-	print(f"LOG: Ttotal: {(tdelta)*1000}ms | time/call: {(tdelta/times)*1000}ms")
-	print(f"LOG: output == ", fnoutput)
+	print(f"LOG: Ttotal: {(tdelta)*1000}ms | time/call: {(tdelta/times)*1000}ms") if verbose else None
+	print(f"LOG: output == ", fnoutput) if verbose else None
 	return tdelta
 
 
@@ -430,10 +430,6 @@ def i_want_to_release_this_version_on_github():
 
 if __name__ == "__main__":
 	print(randomstring(100))
-
-	a = [12, 3, 23, 234, 23]
-	a = numpy.zeros(10)
-	print(a)
 	# require(['numpy', 'pandas', 'bs4'])
 
 

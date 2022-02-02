@@ -26,7 +26,6 @@ def progressive_import():
                     success = 1
                     print("mx imported")
                 except Exception as e:
-                    ...
                     pass
 
 

@@ -370,9 +370,9 @@ def parse_header(*firefoxAllHeaders, file=""):
 	return {k: v for k, v in [x.values() for x in serializedHeaders]}
 
 
-def parse_raw_headers(log=0):
-	headers={}
-	for x in open('data/headers.raw').read().split('\n'):
+def parse_raw_headers(fpath, log=0):
+	headers = {}
+	for x in open(fpath).read().split('\n'):
 		d = dict([[y.strip() for y in x.split(':', 1)]])
 		headers.update(d)
 		if log: 

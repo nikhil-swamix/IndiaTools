@@ -370,10 +370,14 @@ def parse_header(*firefoxAllHeaders, file=""):
 	return {k: v for k, v in [x.values() for x in serializedHeaders]}
 
 
-def parse_raw_headers():
+def parse_raw_headers(log=0):
+	headers={}
 	for x in open('data/headers.raw').read().split('\n'):
 		d = dict([[y.strip() for y in x.split(':', 1)]])
-		print(d)
+		headers.update(d)
+		if log: 
+			print(d) 
+	return headers
 
 
 def make_cookie(req):
@@ -384,6 +388,7 @@ def auto_encoder(d):
 	'''encode dict to url get params'''
 	string = "&".join([f"{k}={urllib.parse.quote_plus(str(v))}" for k, v in d.items()])
 	return string
+
 
 def wlan_ip():
 	import subprocess

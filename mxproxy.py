@@ -40,8 +40,14 @@ def fetch_latest_copy():
         print('Modulex already present')
 
 
+
 if __name__ == '__main__':
     print(datetime.now())
     fetch_latest_copy()
 else:
-    fetch_latest_copy()
+    sys.path.append('../')
+    try:
+        import modulex as mx
+    except:
+        sys.path.append('../../')
+        import modulex as mx

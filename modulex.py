@@ -444,7 +444,18 @@ def i_want_to_release_this_version_on_github():
 
 
 if __name__ == "__main__":
-	print(randomstring(100))
+	...
+	# mypage = get_page_soup('https://www.edarabia.com/courses/').select('.list-items')
+	# coursedata = dict()
+	# for category in mypage:
+	# 	try:
+	# 		coursename = category.find('h3').text
+	# 		subcourses = list(map(lambda x: x.text, category.select('ul>li')))
+	# 		coursedata.update({coursename : subcourses})
+	# 	except Exception as e:
+	# 		pass
+	# jdump(coursedata, 'course-and-subcourses.json')
+
 	# require(['numpy', 'pandas', 'bs4'])
 
 
